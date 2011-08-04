@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Simple Gallery</title>
+  <script type="text/javascript" src="basic_renderer.js"></script>
+  <script type="text/javascript" src="../antigallery.js"></script>
+  <script type="text/javascript">
+    basic_renderer = new BasicRenderer("gallery_container");
+    gallery = new AntiGallery([{ full: 'images/full.gif', thumb: 'images/thumb.gif' }]);
+    gallery.renderWith(basic_renderer);
+  </script>
+
+</head>
+<body>
+<div id="gallery_container"></div>
+</body>
+</html>
