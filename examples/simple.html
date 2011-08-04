@@ -5,16 +5,24 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<title>Simple Gallery</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script type="text/javascript" src="basic_renderer.js"></script>
   <script type="text/javascript" src="../antigallery.js"></script>
   <script type="text/javascript">
     basic_renderer = new BasicRenderer("gallery_container");
-    gallery = new AntiGallery([{ full: 'images/full.gif', thumb: 'images/thumb.gif' }]);
-    gallery.renderWith(basic_renderer);
+    gallery = new AntiGallery([{ full: 'images/full.gif', thumb: 'images/thumb.gif' }, { full: 'images/full.gif', thumb: 'images/thumb.gif' }]);
+    $(document).ready(function(){
+      gallery.renderWith(basic_renderer);
+    });
   </script>
 
 </head>
 <body>
-<div id="gallery_container"></div>
+<div id="gallery_container">
+  <div id="main_image">
+  </div>
+  <div id="thumbs">
+  </div>
+</div>
 </body>
 </html>
