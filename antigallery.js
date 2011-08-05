@@ -42,9 +42,20 @@
     AntiGallery.prototype.imageForIndex = function(index) {
       return this.stripFull(this.images[index]);
     };
-    AntiGallery.prototype.nextImage = function() {};
-    AntiGallery.prototype.previousImage = function() {};
-    AntiGallery.prototype.clickThumb = function() {};
+    AntiGallery.prototype.nextImage = function() {
+      this.currentIndex += 1;
+      if (this.currentIndex > this.images.length - 1) {
+        this.currentIndex = 0;
+      }
+      return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+    };
+    AntiGallery.prototype.previousImage = function() {
+      this.currentIndex -= 1;
+      if (this.currentIndex < this.images.length - 1) {
+        this.currentIndex = this.images[this.images.length - 1];
+      }
+      return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+    };
     AntiGallery.prototype.thumbs = function() {
       var image, _i, _len, _ref, _results;
       _ref = this.images;

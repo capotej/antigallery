@@ -37,10 +37,16 @@ class self.AntiGallery
     @stripFull @images[index]
 
   nextImage: ->
+    @currentIndex += 1
+    if @currentIndex > @images.length - 1
+      @currentIndex = 0
+    @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   previousImage: ->
-
-  clickThumb: ->
+    @currentIndex -= 1
+    if @currentIndex < @images.length - 1
+      @currentIndex = @images[@images.length - 1]
+    @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   thumbs: ->
     @stripThumb image for image in @images
