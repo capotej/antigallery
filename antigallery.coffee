@@ -95,7 +95,7 @@ class self.AntiGallery
 
   renderThumbPage: ->
     offset = @currentPageIndex % @pages.length
-    offset =* -1 if offset < 0
+    offset *= -1 if offset < 0
     @preloadNearbyThumbSets()
     @preloadNearbyImages()
     @renderer.renderThumbs @pages[offset]

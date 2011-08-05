@@ -127,7 +127,7 @@
       var offset;
       offset = this.currentPageIndex % this.pages.length;
       if (offset < 0) {
-        offset = offset * -1;
+        offset *= -1;
       }
       this.preloadNearbyThumbSets();
       this.preloadNearbyImages();
