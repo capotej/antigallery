@@ -50,9 +50,10 @@
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
     AntiGallery.prototype.previousImage = function() {
-      this.currentIndex -= 1;
-      if (this.currentIndex < this.images.length - 1) {
-        this.currentIndex = this.images[this.images.length - 1];
+      if (this.currentIndex === 0) {
+        this.currentIndex = this.images.length - 1;
+      } else {
+        this.currentIndex -= 1;
       }
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };

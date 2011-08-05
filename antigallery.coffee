@@ -43,9 +43,10 @@ class self.AntiGallery
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   previousImage: ->
-    @currentIndex -= 1
-    if @currentIndex < @images.length - 1
-      @currentIndex = @images[@images.length - 1]
+    if @currentIndex == 0
+      @currentIndex = @images.length - 1
+    else
+      @currentIndex -= 1
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   thumbs: ->
