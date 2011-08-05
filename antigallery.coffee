@@ -112,6 +112,7 @@ class self.AntiGallery
     @currentIndex += 1
     if @currentIndex > @images.length - 1
       @currentIndex = 0
+    @renderer.setActiveThumb @currentIndex
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   previousImage: ->
@@ -119,6 +120,7 @@ class self.AntiGallery
       @currentIndex = @images.length - 1
     else
       @currentIndex -= 1
+    @renderer.setActiveThumb @currentIndex
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
   stripThumbs: (set) ->

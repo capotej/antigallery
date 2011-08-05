@@ -143,6 +143,7 @@
       if (this.currentIndex > this.images.length - 1) {
         this.currentIndex = 0;
       }
+      this.renderer.setActiveThumb(this.currentIndex);
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
     AntiGallery.prototype.previousImage = function() {
@@ -151,6 +152,7 @@
       } else {
         this.currentIndex -= 1;
       }
+      this.renderer.setActiveThumb(this.currentIndex);
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
     AntiGallery.prototype.stripThumbs = function(set) {
