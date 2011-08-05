@@ -65,8 +65,18 @@
               </div>
               
               <div class="method">
+                <h4>thumbSetIndexName()</h4>
+                <p>The name of the data element that holds the thumbset index</p>
+              </div>
+              
+              <div class="method">
                 <h4>renderThumbs(thumbs)</h4>
-                <p>Takes an array of thumb urls, expects them to be drawn to the dom with a data attribute containing the index</p>
+                <p>Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object</p>
+              </div>
+              
+              <div class="method">
+                <h4>renderNavForPages(length)</h4>
+                <p>Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index</p>
               </div>
               
               <div class="method">
@@ -85,7 +95,22 @@
               </div>
               
               <div class="method">
+                <h4>nextPageButton()</h4>
+                <p>Needs to return a scoped selector to that gallerys next thumbset button</p>
+              </div>
+              
+              <div class="method">
+                <h4>previousPageButton()</h4>
+                <p>Needs to return a scoped selector to that gallerys previous thumbset button</p>
+              </div>
+              
+              <div class="method">
                 <h4>thumbElement()</h4>
+                <p>Needs to return a scoped selector to all of the thumb img elements for the gallery</p>
+              </div>
+              
+              <div class="method">
+                <h4>pageElement()</h4>
                 <p>Needs to return a scoped selector to all of the thumb img elements for the gallery</p>
               </div>
               
