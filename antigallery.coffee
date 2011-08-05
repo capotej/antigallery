@@ -2,25 +2,27 @@ class self.AntiGallery
   constructor: (images) ->
     @images = (@tagImage(image,_i) for image in images)
     @currentIndex = 0
-    @currentThumbIndex = 0
+    @currentPageIndex = 0
 
   tagImage: (image, i) ->
     image.id = i
     image
 
-  overThreshold: ->
-    @images.length > @renderer.paginateThreshold
-
   divideImages: ->
     arr = []
     sub_arr = []
-    $(@images).each (index, image) =>
+    $(@images).each (index, image) ->
       index = index + 1
       sub_arr.push image
-      if index % @renderer.paginateThreshold == 0
+      if index % 5 == 0
         arr.push sub_arr
         sub_arr = []
+    arr.push sub_arr unless sub_arr == []
     arr
+
+
+  overThreshold: ->
+    @images.length > @renderer.paginateThreshold
 
   stripThumb: (image) ->
     image.thumb
@@ -44,12 +46,12 @@ class self.AntiGallery
   registerThumbNext: (button) ->
     button.click (evt) =>
       evt.preventDefault()
-      @nextImage()
+      @nextPage()
 
   registerThumbPrevious: (button) ->
     button.click (evt) =>
       evt.preventDefault()
-      @previousImage()
+      @previousPage()
 
   registerThumbClick: (button) ->
     button.click (evt) =>
@@ -63,6 +65,21 @@ class self.AntiGallery
 
   imageForIndex: (index) ->
     @stripFull @images[index]
+
+  nextPage: ->
+    @currentPageIndex += 1
+    if @currentIndex > @pages.length - 1
+      @currentPageIndex = 0
+    console.log @pages
+    console.log @currentPageIndex
+    @renderer.renderThumbs @pages[@currentPageIndex]
+
+  previousPage: ->
+    if @currentPageIndex == 0
+      @currentPageIndex = @images.length - 1
+    else
+      @currentPageIndex -= 1
+    @renderer.renderThumbs @pages[@currentPageIndex]
 
   nextImage: ->
     @currentIndex += 1
@@ -84,20 +101,20 @@ class self.AntiGallery
     @rendererCallbacks(@renderer)
     @registerEvents()
 
-
   rendererCallbacks: ->
     unless @overThreshold()
-      @thumbs = [@images]
+      @pages = [@images]
     else
-      @thumbs = @divideImages()
+      @pages = @divideImages()
 
+    console.log @pages
     @renderer.renderMainImage @firstImage()
-    @renderer.renderThumbs @thumbs[@currentThumbIndex]
+    @renderer.renderThumbs @pages[0]
 
   registerEvents: ->
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
-    @registerThumbPrevious @renderer.previousThumbButton()
-    @registerThumbNext @renderer.nextThumbButton()
+    @registerThumbPrevious @renderer.previousPageButton()
+    @registerThumbNext @renderer.nextPageButton()
     @registerThumbClick @renderer.thumbElement()
 

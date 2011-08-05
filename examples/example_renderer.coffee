@@ -73,13 +73,13 @@ class self.ExampleRenderer
     ###
     @select('#prev')
 
-  nextThumbButton: ->
+  nextPageButton: ->
     ###
     Needs to return a scoped selector to that gallerys next thumbset button
     ###
     @select("#next_thumb")
 
-  previousThumbButton: ->
+  previousPageButton: ->
     ###
     Needs to return a scoped selector to that gallerys previous thumbset button
     ###

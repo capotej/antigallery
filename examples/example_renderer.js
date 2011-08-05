@@ -65,12 +65,12 @@
           Needs to return a scoped selector to that gallerys previous button
           */      return this.select('#prev');
     };
-    ExampleRenderer.prototype.nextThumbButton = function() {
+    ExampleRenderer.prototype.nextPageButton = function() {
       /*
           Needs to return a scoped selector to that gallerys next thumbset button
           */      return this.select("#next_thumb");
     };
-    ExampleRenderer.prototype.previousThumbButton = function() {
+    ExampleRenderer.prototype.previousPageButton = function() {
       /*
           Needs to return a scoped selector to that gallerys previous thumbset button
           */      return this.select('#prev_thumb');

@@ -13,28 +13,31 @@
         return _results;
       }).call(this);
       this.currentIndex = 0;
-      this.currentThumbIndex = 0;
+      this.currentPageIndex = 0;
     }
     AntiGallery.prototype.tagImage = function(image, i) {
       image.id = i;
       return image;
     };
-    AntiGallery.prototype.overThreshold = function() {
-      return this.images.length > this.renderer.paginateThreshold;
-    };
     AntiGallery.prototype.divideImages = function() {
       var arr, sub_arr;
       arr = [];
       sub_arr = [];
-      $(this.images).each(__bind(function(index, image) {
+      $(this.images).each(function(index, image) {
         index = index + 1;
         sub_arr.push(image);
-        if (index % this.renderer.paginateThreshold === 0) {
+        if (index % 5 === 0) {
           arr.push(sub_arr);
           return sub_arr = [];
         }
-      }, this));
+      });
+      if (sub_arr !== []) {
+        arr.push(sub_arr);
+      }
       return arr;
+    };
+    AntiGallery.prototype.overThreshold = function() {
+      return this.images.length > this.renderer.paginateThreshold;
     };
     AntiGallery.prototype.stripThumb = function(image) {
       return image.thumb;
@@ -60,13 +63,13 @@
     AntiGallery.prototype.registerThumbNext = function(button) {
       return button.click(__bind(function(evt) {
         evt.preventDefault();
-        return this.nextImage();
+        return this.nextPage();
       }, this));
     };
     AntiGallery.prototype.registerThumbPrevious = function(button) {
       return button.click(__bind(function(evt) {
         evt.preventDefault();
-        return this.previousImage();
+        return this.previousPage();
       }, this));
     };
     AntiGallery.prototype.registerThumbClick = function(button) {
@@ -83,6 +86,23 @@
     };
     AntiGallery.prototype.imageForIndex = function(index) {
       return this.stripFull(this.images[index]);
+    };
+    AntiGallery.prototype.nextPage = function() {
+      this.currentPageIndex += 1;
+      if (this.currentIndex > this.pages.length - 1) {
+        this.currentPageIndex = 0;
+      }
+      console.log(this.pages);
+      console.log(this.currentPageIndex);
+      return this.renderer.renderThumbs(this.pages[this.currentPageIndex]);
+    };
+    AntiGallery.prototype.previousPage = function() {
+      if (this.currentPageIndex === 0) {
+        this.currentPageIndex = this.images.length - 1;
+      } else {
+        this.currentPageIndex -= 1;
+      }
+      return this.renderer.renderThumbs(this.pages[this.currentPageIndex]);
     };
     AntiGallery.prototype.nextImage = function() {
       this.currentIndex += 1;
@@ -115,18 +135,19 @@
     };
     AntiGallery.prototype.rendererCallbacks = function() {
       if (!this.overThreshold()) {
-        this.thumbs = [this.images];
+        this.pages = [this.images];
       } else {
-        this.thumbs = this.divideImages();
+        this.pages = this.divideImages();
       }
+      console.log(this.pages);
       this.renderer.renderMainImage(this.firstImage());
-      return this.renderer.renderThumbs(this.thumbs[this.currentThumbIndex]);
+      return this.renderer.renderThumbs(this.pages[0]);
     };
     AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
-      this.registerThumbPrevious(this.renderer.previousThumbButton());
-      this.registerThumbNext(this.renderer.nextThumbButton());
+      this.registerThumbPrevious(this.renderer.previousPageButton());
+      this.registerThumbNext(this.renderer.nextPageButton());
       return this.registerThumbClick(this.renderer.thumbElement());
     };
     return AntiGallery;
