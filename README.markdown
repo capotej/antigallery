@@ -16,7 +16,7 @@ During my career as a web developer I've used dozens of jquery galleries, each o
 * It has no idea how to render or what DOM elements to listen to for events
 
 ### Enter the Renderer
-Since Anti Gallery only contains the business end of a gallery, it needs to drive something in order to be useful. This lets you **completely** control how the gallery works. No options hash here, this is next level shit.
+Since Anti Gallery only contains the business end of a gallery, it needs to drive something in order to be useful. So you create a renderer. A renderer is just an object that responds to certain methods which Anti Gallery. Since it's 100% callback based, this lets you **completely** control how the gallery works.
 
 ### How you use it
 
@@ -33,3 +33,5 @@ $(document).ready(function(){
 });
 
 ```
+
+Check out the examples/ folder for an example_renderer that responds to all callbacks.
