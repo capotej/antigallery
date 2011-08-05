@@ -35,3 +35,6 @@ $(document).ready(function(){
 ```
 
 Check out the examples/ folder for an example_renderer that responds to all callbacks.
+
+## License
+Anti Gallery is released under the MIT license.
