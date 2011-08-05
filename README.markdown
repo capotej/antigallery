@@ -13,7 +13,7 @@ During my career as a web developer I've used dozens of jquery galleries, each o
 
 ### Where Anti Gallery is different (and a little extremist)
 * Anti Gallery has no idea about your DOM, it takes a JSON hash of thumb and full size urls, that's it.
-* It has no idea how to render or what DOM elements to listen to for events, simply fires callback on a provided render.
+* It has no idea how to render or what DOM elements to listen to for events, simply fires callback on a provided renderer.
 
 ### Enter the Renderer
 Since Anti Gallery only contains the business end of a gallery, it needs to drive something in order to be useful. So you create a renderer. A renderer is just an object that responds to certain methods which Anti Gallery. Since it's 100% callback based, this lets you **completely** control how the gallery works.
