@@ -35,13 +35,19 @@ class self.ExampleRenderer
     ###
     "thumb-index"
 
+  thumbSetIndexName: ->
+    ###
+    The name of the data element that holds the thumbset index
+    ###
+    "thumbset-index"
+
   renderThumbs: (thumbs) ->
     ###
-    Takes an array of thumb urls, expects them to be drawn to the dom with a data attribute containing the index
+    Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object
     ###
+    @select('#thumbs').empty()
     $(thumbs).each (index, object) =>
-      @select('#thumbs').append("<img class=\"thumb\" src=\"#{object}\" data-thumb-index=\"#{index}\"/>")
-
+      @select('#thumbs').append("<img class=\"thumb\" src=\"#{object.thumb}\" data-thumb-index=\"#{object.id}\"/>")
 
   renderMainImage: (image) ->
     ###
@@ -49,6 +55,11 @@ class self.ExampleRenderer
     ###
     @select('#main_image').empty().append("<img src=\"#{image}\"/>")
 
+  renderThumbPageCounter: (index) ->
+    ###
+    Gets called with the page number of the thumbset till there is no more, used for navigation
+    ###
+    @select('#thumb_nav').append("<li data-thumbset-index=\"#{index}\">#{index}</li>")
 
   nextButton: ->
     ###
@@ -62,8 +73,22 @@ class self.ExampleRenderer
     ###
     @select('#prev')
 
+  nextThumbButton: ->
+    ###
+    Needs to return a scoped selector to that gallerys next thumbset button
+    ###
+    @select("#next_thumb")
+
+  previousThumbButton: ->
+    ###
+    Needs to return a scoped selector to that gallerys previous thumbset button
+    ###
+    @select('#prev_thumb')
+
+
   thumbElement: ->
     ###
     Needs to return a scoped selector to all of the thumb img elements for the gallery
     ###
     @select('.thumb')
+

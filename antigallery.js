@@ -2,10 +2,23 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
     function AntiGallery(images) {
-      this.images = images;
+      var image;
+      this.images = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = images.length; _i < _len; _i++) {
+          image = images[_i];
+          _results.push(this.tagImage(image, _i));
+        }
+        return _results;
+      }).call(this);
       this.currentIndex = 0;
       this.currentThumbIndex = 0;
     }
+    AntiGallery.prototype.tagImage = function(image, i) {
+      image.id = i;
+      return image;
+    };
     AntiGallery.prototype.overThreshold = function() {
       return this.images.length > this.renderer.paginateThreshold;
     };
@@ -13,14 +26,14 @@
       var arr, sub_arr;
       arr = [];
       sub_arr = [];
-      $(this.images).each(function(index, image) {
+      $(this.images).each(__bind(function(index, image) {
         index = index + 1;
         sub_arr.push(image);
-        if (index % 5 === 0) {
+        if (index % this.renderer.paginateThreshold === 0) {
           arr.push(sub_arr);
           return sub_arr = [];
         }
-      });
+      }, this));
       return arr;
     };
     AntiGallery.prototype.stripThumb = function(image) {
@@ -39,6 +52,18 @@
       }, this));
     };
     AntiGallery.prototype.registerPrevious = function(button) {
+      return button.click(__bind(function(evt) {
+        evt.preventDefault();
+        return this.previousImage();
+      }, this));
+    };
+    AntiGallery.prototype.registerThumbNext = function(button) {
+      return button.click(__bind(function(evt) {
+        evt.preventDefault();
+        return this.nextImage();
+      }, this));
+    };
+    AntiGallery.prototype.registerThumbPrevious = function(button) {
       return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.previousImage();
@@ -94,13 +119,14 @@
       } else {
         this.thumbs = this.divideImages();
       }
-      console.log(this.thumbs[0]);
       this.renderer.renderMainImage(this.firstImage());
-      return this.renderer.renderThumbs(this.extractThumbs(this.thumbs[0]));
+      return this.renderer.renderThumbs(this.thumbs[this.currentThumbIndex]);
     };
     AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
+      this.registerThumbPrevious(this.renderer.previousThumbButton());
+      this.registerThumbNext(this.renderer.nextThumbButton());
       return this.registerThumbClick(this.renderer.thumbElement());
     };
     return AntiGallery;

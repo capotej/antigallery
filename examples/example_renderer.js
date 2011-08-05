@@ -32,17 +32,28 @@
           The name of the data element that holds the thumb index (how configurable is that?!)
           */      return "thumb-index";
     };
+    ExampleRenderer.prototype.thumbSetIndexName = function() {
+      /*
+          The name of the data element that holds the thumbset index
+          */      return "thumbset-index";
+    };
     ExampleRenderer.prototype.renderThumbs = function(thumbs) {
       /*
-          Takes an array of thumb urls, expects them to be drawn to the dom with a data attribute containing the index
-          */      return $(thumbs).each(__bind(function(index, object) {
-        return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + object + "\" data-thumb-index=\"" + index + "\"/>");
+          Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object
+          */      this.select('#thumbs').empty();
+      return $(thumbs).each(__bind(function(index, object) {
+        return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + object.thumb + "\" data-thumb-index=\"" + object.id + "\"/>");
       }, this));
     };
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
           */      return this.select('#main_image').empty().append("<img src=\"" + image + "\"/>");
+    };
+    ExampleRenderer.prototype.renderThumbPageCounter = function(index) {
+      /*
+          Gets called with the page number of the thumbset till there is no more, used for navigation
+          */      return this.select('#thumb_nav').append("<li data-thumbset-index=\"" + index + "\">" + index + "</li>");
     };
     ExampleRenderer.prototype.nextButton = function() {
       /*
@@ -53,6 +64,16 @@
       /*
           Needs to return a scoped selector to that gallerys previous button
           */      return this.select('#prev');
+    };
+    ExampleRenderer.prototype.nextThumbButton = function() {
+      /*
+          Needs to return a scoped selector to that gallerys next thumbset button
+          */      return this.select("#next_thumb");
+    };
+    ExampleRenderer.prototype.previousThumbButton = function() {
+      /*
+          Needs to return a scoped selector to that gallerys previous thumbset button
+          */      return this.select('#prev_thumb');
     };
     ExampleRenderer.prototype.thumbElement = function() {
       /*
