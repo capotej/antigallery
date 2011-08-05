@@ -54,7 +54,7 @@ class self.AntiGallery
       @previousPage()
 
   registerThumbClick: (button) ->
-    button.click (evt) =>
+    button.live 'click', (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbIndexName())
       @setImageAndIndex(index)
@@ -79,7 +79,6 @@ class self.AntiGallery
     if offset < 0
       offset = offset * -1
     @renderer.renderThumbs @pages[offset]
-
 
   nextImage: ->
     @currentIndex += 1

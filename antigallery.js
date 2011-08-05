@@ -73,7 +73,7 @@
       }, this));
     };
     AntiGallery.prototype.registerThumbClick = function(button) {
-      return button.click(__bind(function(evt) {
+      return button.live('click', __bind(function(evt) {
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbIndexName());
