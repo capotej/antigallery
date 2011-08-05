@@ -22,7 +22,6 @@ class self.AntiGallery
     arr.push sub_arr unless sub_arr == []
     arr
 
-
   cacheImage: (image) ->
     @imageCache[image.src]
 
@@ -42,9 +41,6 @@ class self.AntiGallery
 
   stripFull: (image) ->
     image.full
-
-  firstImage: ->
-    @stripFull @images[0]
 
   registerNext: (button) ->
     button.click (evt) =>
@@ -80,18 +76,24 @@ class self.AntiGallery
 
   setImageAndIndex: (index) ->
     @currentIndex = index
+    @renderer.setActiveThumb index
     @renderer.renderMainImage @imageForIndex(index)
 
   imageForIndex: (index) ->
     @stripFull @images[index]
 
+  thumbForIndex: (index) ->
+    @stripThumb @images[index]
+
   nextPage: ->
     @currentPageIndex += 1
     @renderThumbPage()
+    @renderer.setActiveThumb @currentIndex
 
   previousPage: ->
     @currentPageIndex -= 1
     @renderThumbPage()
+    @renderer.setActiveThumb @currentIndex
 
   renderThumbPage: ->
     offset = @currentPageIndex % @pages.length
@@ -101,8 +103,10 @@ class self.AntiGallery
     @renderer.renderThumbs @pages[offset]
 
   preloadNearbyThumbSets: ->
+    #stubbed
 
   preloadNearbyImages: ->
+    #stubbed
 
   nextImage: ->
     @currentIndex += 1
@@ -130,8 +134,8 @@ class self.AntiGallery
     else
       @pages = @divideImages()
     @renderer.renderNavForPages(@pages.length)
-    @renderer.renderMainImage @firstImage()
     @renderer.renderThumbs @pages[0]
+    @setImageAndIndex(0)
 
   registerEvents: ->
     @registerPrevious @renderer.previousButton()

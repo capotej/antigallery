@@ -65,9 +65,6 @@
     AntiGallery.prototype.stripFull = function(image) {
       return image.full;
     };
-    AntiGallery.prototype.firstImage = function() {
-      return this.stripFull(this.images[0]);
-    };
     AntiGallery.prototype.registerNext = function(button) {
       return button.click(__bind(function(evt) {
         evt.preventDefault();
@@ -110,18 +107,24 @@
     };
     AntiGallery.prototype.setImageAndIndex = function(index) {
       this.currentIndex = index;
+      this.renderer.setActiveThumb(index);
       return this.renderer.renderMainImage(this.imageForIndex(index));
     };
     AntiGallery.prototype.imageForIndex = function(index) {
       return this.stripFull(this.images[index]);
     };
+    AntiGallery.prototype.thumbForIndex = function(index) {
+      return this.stripThumb(this.images[index]);
+    };
     AntiGallery.prototype.nextPage = function() {
       this.currentPageIndex += 1;
-      return this.renderThumbPage();
+      this.renderThumbPage();
+      return this.renderer.setActiveThumb(this.currentIndex);
     };
     AntiGallery.prototype.previousPage = function() {
       this.currentPageIndex -= 1;
-      return this.renderThumbPage();
+      this.renderThumbPage();
+      return this.renderer.setActiveThumb(this.currentIndex);
     };
     AntiGallery.prototype.renderThumbPage = function() {
       var offset;
@@ -171,8 +174,8 @@
         this.pages = this.divideImages();
       }
       this.renderer.renderNavForPages(this.pages.length);
-      this.renderer.renderMainImage(this.firstImage());
-      return this.renderer.renderThumbs(this.pages[0]);
+      this.renderer.renderThumbs(this.pages[0]);
+      return this.setImageAndIndex(0);
     };
     AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());

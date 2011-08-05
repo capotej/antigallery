@@ -55,12 +55,18 @@ class self.ExampleRenderer
     ###
     @select('#page_nav').append("<li class=\"page\" data-thumbset-index=\"#{i}\">Page</li>") for i in [0...length]
 
+  setActiveThumb: (index) ->
+    ###
+    Takes the index of the currently displayed image, used for styling the active thumb
+    ###
+    @select("#thumbs img").css('border', '0px solid black')
+    @select("#thumbs img[data-thumb-index=\"#{index}\"]").css('border', '1px solid black')
+
   renderMainImage: (image) ->
     ###
     Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
     ###
     @select('#main_image').empty().append("<img src=\"#{image}\"/>")
-
 
   nextButton: ->
     ###

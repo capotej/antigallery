@@ -55,6 +55,12 @@
       }
       return _results;
     };
+    ExampleRenderer.prototype.setActiveThumb = function(index) {
+      /*
+          Takes the index of the currently displayed image, used for styling the active thumb
+          */      this.select("#thumbs img").css('border', '0px solid black');
+      return this.select("#thumbs img[data-thumb-index=\"" + index + "\"]").css('border', '1px solid black');
+    };
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
