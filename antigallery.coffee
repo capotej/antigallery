@@ -1,8 +1,10 @@
 class self.AntiGallery
   constructor: (images) ->
-    @images = (@tagImage(image,_i) for image in images)
     @currentIndex = 0
     @currentPageIndex = 0
+    @imageCache = {}
+    @images = (@tagImage(image,_i) for image in images)
+    @preloadImages(@stripThumbs(@images[0...5]))
 
   tagImage: (image, i) ->
     image.id = i
@@ -19,6 +21,18 @@ class self.AntiGallery
         sub_arr = []
     arr.push sub_arr unless sub_arr == []
     arr
+
+
+  cacheImage: (image) ->
+    @imageCache[image.src]
+
+  preloadImages: (images) ->
+    @preloadImage image for image in images
+
+  preloadImage: (image) ->
+    img = document.createElement('img');
+    img.src = image
+    @cacheImage img
 
   overThreshold: ->
     @images.length > @renderer.paginateThreshold
@@ -81,9 +95,14 @@ class self.AntiGallery
 
   renderThumbPage: ->
     offset = @currentPageIndex % @pages.length
-    if offset < 0
-      offset = offset * -1
+    offset =* -1 if offset < 0
+    @preloadNearbyThumbSets()
+    @preloadNearbyImages()
     @renderer.renderThumbs @pages[offset]
+
+  preloadNearbyThumbSets: ->
+
+  preloadNearbyImages: ->
 
   nextImage: ->
     @currentIndex += 1
@@ -98,7 +117,7 @@ class self.AntiGallery
       @currentIndex -= 1
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
-  extractThumbs: (set) ->
+  stripThumbs: (set) ->
     @stripThumb image for image in set
 
   renderWith: (@renderer) ->

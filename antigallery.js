@@ -3,6 +3,9 @@
   self.AntiGallery = (function() {
     function AntiGallery(images) {
       var image;
+      this.currentIndex = 0;
+      this.currentPageIndex = 0;
+      this.imageCache = {};
       this.images = (function() {
         var _i, _len, _results;
         _results = [];
@@ -12,8 +15,7 @@
         }
         return _results;
       }).call(this);
-      this.currentIndex = 0;
-      this.currentPageIndex = 0;
+      this.preloadImages(this.stripThumbs(this.images.slice(0, 5)));
     }
     AntiGallery.prototype.tagImage = function(image, i) {
       image.id = i;
@@ -35,6 +37,24 @@
         arr.push(sub_arr);
       }
       return arr;
+    };
+    AntiGallery.prototype.cacheImage = function(image) {
+      return this.imageCache[image.src];
+    };
+    AntiGallery.prototype.preloadImages = function(images) {
+      var image, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = images.length; _i < _len; _i++) {
+        image = images[_i];
+        _results.push(this.preloadImage(image));
+      }
+      return _results;
+    };
+    AntiGallery.prototype.preloadImage = function(image) {
+      var img;
+      img = document.createElement('img');
+      img.src = image;
+      return this.cacheImage(img);
     };
     AntiGallery.prototype.overThreshold = function() {
       return this.images.length > this.renderer.paginateThreshold;
@@ -109,8 +129,12 @@
       if (offset < 0) {
         offset = offset * -1;
       }
+      this.preloadNearbyThumbSets();
+      this.preloadNearbyImages();
       return this.renderer.renderThumbs(this.pages[offset]);
     };
+    AntiGallery.prototype.preloadNearbyThumbSets = function() {};
+    AntiGallery.prototype.preloadNearbyImages = function() {};
     AntiGallery.prototype.nextImage = function() {
       this.currentIndex += 1;
       if (this.currentIndex > this.images.length - 1) {
@@ -126,7 +150,7 @@
       }
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
-    AntiGallery.prototype.extractThumbs = function(set) {
+    AntiGallery.prototype.stripThumbs = function(set) {
       var image, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = set.length; _i < _len; _i++) {
