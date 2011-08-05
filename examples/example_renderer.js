@@ -13,6 +13,10 @@
           (Optional) You can get creative here with your own constructor, but ours will just take a div id.
           */
     }
+    ExampleRenderer.prototype.paginateThreshold = 5;
+    /*
+        When to paginate
+        */
     ExampleRenderer.prototype.container = function() {
       /*
           (Optional) Convinience function for returning a jquery object of the container div

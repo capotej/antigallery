@@ -3,6 +3,21 @@ class self.AntiGallery
     @currentIndex = 0
     @currentThumbIndex = 0
 
+  overThreshold: ->
+    @images.length > @renderer.paginateThreshold
+
+  divideImages: ->
+    arr = []
+    sub_arr = []
+    $(@images).each (index, image) ->
+      index = index + 1
+      sub_arr.push image
+      if index % 5 == 0
+        arr.push sub_arr
+        sub_arr = []
+    arr
+
+
   stripThumb: (image) ->
     image.thumb
 
@@ -48,16 +63,22 @@ class self.AntiGallery
       @currentIndex -= 1
     @renderer.renderMainImage @imageForIndex(@currentIndex)
 
-  thumbs: ->
-    @stripThumb image for image in @images
+  extractThumbs: (set) ->
+    @stripThumb image for image in set
 
   renderWith: (@renderer) ->
     @rendererCallbacks(@renderer)
     @registerEvents()
 
   rendererCallbacks: ->
+    unless @overThreshold()
+      @thumbs = [@images]
+    else
+      @thumbs = @divideImages()
+
+    console.log @thumbs[0]
     @renderer.renderMainImage @firstImage()
-    @renderer.renderThumbs @thumbs()
+    @renderer.renderThumbs @extractThumbs(@thumbs[0])
 
   registerEvents: ->
     @registerPrevious @renderer.previousButton()

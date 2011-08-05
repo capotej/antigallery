@@ -11,6 +11,11 @@ class self.ExampleRenderer
     (Optional) You can get creative here with your own constructor, but ours will just take a div id.
     ###
 
+  paginateThreshold: 5
+    ###
+    When to paginate
+    ###
+
   container: ->
     ###
     (Optional) Convinience function for returning a jquery object of the container div
