@@ -1,15 +1,9 @@
-Array::wrap = (start, length) ->
-  if length?
-    end = start + length
-    result = []
-    i = start
-
-    while i < end
-      result.push this[i % @length]
-      i++
-    result
+window.mod = (a, b) =>
+  r = a % b
+  if r >= 0
+    r
   else
-    this[start % @length]
+    window.mod a + b, b
 
 class self.AntiGallery
   constructor: (images) ->
@@ -18,6 +12,14 @@ class self.AntiGallery
     @imageCache = {}
     @images = (@tagImage(image,_i) for image in images)
     @preloadImages(@stripThumbs(@images[0...5]))
+
+  mod: (a, b) =>
+    return 0 if b == 0
+    r = a % b
+    if r >= 0
+      r
+    else
+      @mod a + b, b
 
   tagImage: (image, i) ->
     image.id = i
@@ -59,7 +61,7 @@ class self.AntiGallery
     image.thumb
 
   stripId: (image) ->
-    image.thumb
+    image.id
 
   stripFull: (image) ->
     image.full
@@ -102,13 +104,16 @@ class self.AntiGallery
     @renderer.renderMainImage @imageForIndex(index)
 
   imageForIndex: (index) ->
-    @stripFull @images.wrap(index)
+    @stripFull @images[@mod(index, @images.length)]
 
   thumbForIndex: (index) ->
-    @stripThumb @images.wrap(index)
+    @stripThumb @images[@mod(index, @images.length)]
 
   idForIndex: (index) ->
-    @stripId @images.wrap(index)
+    @stripId @images[@mod(index, @images.length)]
+
+  relativeIndex: ->
+    @mod(@images.length, @currentIndex)# - @renderer.paginateThreshold
 
   nextPage: ->
     @currentPageIndex += 1
@@ -127,7 +132,7 @@ class self.AntiGallery
   renderThumbPage: ->
     @preloadNearbyThumbSets()
     @preloadNearbyImages()
-    @renderer.renderThumbs @pages.wrap(@currentPageIndex)
+    @renderer.renderThumbs @pages[@mod(@currentPageIndex, @pages.length)]
 
   nextImage: ->
     @currentIndex += 1

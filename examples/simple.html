@@ -13,7 +13,7 @@
     basic_renderer = new ExampleRenderer("gallery_container");
     other_renderer = new ExampleRenderer("other_container");
 
-    gallery = new AntiGallery([
+    window.gallery = new AntiGallery([
       { full: 'images/one.png',   thumb: 'images/one_thumb.jpeg' }, 
       { full: 'images/two.png',   thumb: 'images/two_thumb.jpeg' }, 
       { full: 'images/three.png', thumb: 'images/three_thumb.jpeg' }, 
@@ -38,8 +38,8 @@
     ]);
 
     $(document).ready(function(){
-      gallery.renderWith(basic_renderer);
-      other.renderWith(other_renderer);
+      window.gallery.renderWith(basic_renderer);
+      //other.renderWith(other_renderer);
     });
 
   </script>
