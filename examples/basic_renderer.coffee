@@ -6,10 +6,14 @@ class self.BasicRenderer
   container: ->
     $("##{@container_div}")
 
+  # should probably pick a good default for this, but still i want *no* strings in antigallery lol
+  thumbIndexName: ->
+    "thumb-index"
+
   # takes a list of thumb urls
   renderThumbs: (thumbs) ->
     $(thumbs).each (index, object) ->
-       $('#thumbs').append("<img src=\"#{object}\"/>")
+       $('#thumbs').append("<img class=\"thumb\" src=\"#{object}\" data-thumb-index=\"#{index}\"/>")
 
   # takes a full image url, called on boot with first image, called every time images are changed
   renderMainImage: (image) ->
@@ -26,3 +30,7 @@ class self.BasicRenderer
   # returns a jq selector for this galleries previous button
   previousButton: ->
     @select('#prev')
+
+  thumbElement: ->
+    @select('.thumb')
+

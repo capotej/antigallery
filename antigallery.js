@@ -1,7 +1,10 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
     function AntiGallery(images) {
       this.images = images;
+      this.currentIndex = 0;
+      this.currentThumbIndex = 0;
     }
     AntiGallery.prototype.stripThumb = function(image) {
       return image.thumb;
@@ -13,17 +16,35 @@
       return this.stripFull(this.images[0]);
     };
     AntiGallery.prototype.registerNext = function(button) {
-      return button.click(function(evt) {
+      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.nextImage();
-      });
+      }, this));
     };
     AntiGallery.prototype.registerPrevious = function(button) {
-      return button.click(function(evt) {
+      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.previousImage();
-      });
+      }, this));
     };
+    AntiGallery.prototype.registerThumbClick = function(button) {
+      return button.click(__bind(function(evt) {
+        var index;
+        evt.preventDefault();
+        index = $(evt.target).data(this.renderer.thumbIndexName());
+        return this.setImageAndIndex(index);
+      }, this));
+    };
+    AntiGallery.prototype.setImageAndIndex = function(index) {
+      this.currentIndex = index;
+      return this.renderer.renderMainImage(this.imageForIndex(index));
+    };
+    AntiGallery.prototype.imageForIndex = function(index) {
+      return this.stripFull(this.images[index]);
+    };
+    AntiGallery.prototype.nextImage = function() {};
+    AntiGallery.prototype.previousImage = function() {};
+    AntiGallery.prototype.clickThumb = function() {};
     AntiGallery.prototype.thumbs = function() {
       var image, _i, _len, _ref, _results;
       _ref = this.images;
@@ -36,11 +57,11 @@
     };
     AntiGallery.prototype.renderWith = function(renderer) {
       this.renderer = renderer;
+      this.renderer.renderMainImage(this.firstImage());
+      this.renderer.renderThumbs(this.thumbs());
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
-      this.renderer.nextButton;
-      this.renderer.renderMainImage(this.firstImage());
-      return this.renderer.renderThumbs(this.thumbs());
+      return this.registerThumbClick(this.renderer.thumbElement());
     };
     return AntiGallery;
   })();
