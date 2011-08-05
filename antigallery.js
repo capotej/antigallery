@@ -99,7 +99,7 @@
       var offset;
       offset = this.currentPageIndex % this.pages.length;
       if (offset < 0) {
-        offset = this.currentPageIndex % this.pages.length * -1;
+        offset = offset * -1;
       }
       return this.renderer.renderThumbs(this.pages[offset]);
     };

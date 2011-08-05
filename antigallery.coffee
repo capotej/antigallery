@@ -77,7 +77,7 @@ class self.AntiGallery
   renderThumbPage: ->
     offset = @currentPageIndex % @pages.length
     if offset < 0
-      offset = @currentPageIndex % @pages.length * -1
+      offset = offset * -1
     @renderer.renderThumbs @pages[offset]
 
 
