@@ -34,15 +34,15 @@ class self.ExampleRenderer
     ###
     Takes an array of thumb urls, expects them to be drawn to the dom with a data attribute containing the index
     ###
-    $(thumbs).each (index, object) ->
-       $('#thumbs').append("<img class=\"thumb\" src=\"#{object}\" data-thumb-index=\"#{index}\"/>")
+    $(thumbs).each (index, object) =>
+      @select('#thumbs').append("<img class=\"thumb\" src=\"#{object}\" data-thumb-index=\"#{index}\"/>")
 
 
   renderMainImage: (image) ->
     ###
     Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
     ###
-    $('#main_image').empty().append("<img src=\"#{image}\"/>")
+    @select('#main_image').empty().append("<img src=\"#{image}\"/>")
 
 
   nextButton: ->

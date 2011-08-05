@@ -5,7 +5,8 @@
   
   This defines a basic renderer for use with antigallery. All callbacks mandatory unless stated otherwise.
   
-  */  self.ExampleRenderer = (function() {
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  self.ExampleRenderer = (function() {
     function ExampleRenderer(container_div) {
       this.container_div = container_div;
       /*
@@ -30,14 +31,14 @@
     ExampleRenderer.prototype.renderThumbs = function(thumbs) {
       /*
           Takes an array of thumb urls, expects them to be drawn to the dom with a data attribute containing the index
-          */      return $(thumbs).each(function(index, object) {
-        return $('#thumbs').append("<img class=\"thumb\" src=\"" + object + "\" data-thumb-index=\"" + index + "\"/>");
-      });
+          */      return $(thumbs).each(__bind(function(index, object) {
+        return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + object + "\" data-thumb-index=\"" + index + "\"/>");
+      }, this));
     };
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
-          */      return $('#main_image').empty().append("<img src=\"" + image + "\"/>");
+          */      return this.select('#main_image').empty().append("<img src=\"" + image + "\"/>");
     };
     ExampleRenderer.prototype.nextButton = function() {
       /*

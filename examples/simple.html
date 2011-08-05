@@ -11,6 +11,7 @@
   <script type="text/javascript">
 
     basic_renderer = new ExampleRenderer("gallery_container");
+    other_renderer = new ExampleRenderer("other_container");
 
     gallery = new AntiGallery([
       { full: 'images/one.png',   thumb: 'images/one_thumb.jpeg' }, 
@@ -21,8 +22,18 @@
       { full: 'images/six.png',   thumb: 'images/six_thumb.jpeg' }
     ]);
 
+    other = new AntiGallery([
+      { full: 'images/one.png',   thumb: 'images/one_thumb.jpeg' }, 
+      { full: 'images/two.png',   thumb: 'images/two_thumb.jpeg' }, 
+      { full: 'images/three.png', thumb: 'images/three_thumb.jpeg' }, 
+      { full: 'images/four.png',  thumb: 'images/four_thumb.jpeg' }, 
+      { full: 'images/five.png',  thumb: 'images/five_thumb.jpeg' }, 
+      { full: 'images/six.png',   thumb: 'images/six_thumb.jpeg' }
+    ]);
+
     $(document).ready(function(){
       gallery.renderWith(basic_renderer);
+      other.renderWith(other_renderer);
     });
 
   </script>
@@ -37,5 +48,15 @@
   <span id="next">Next</span>
   <span id="prev">Prev</span>
 </div>
+
+<div id="other_container">
+  <div id="main_image">
+  </div>
+  <div id="thumbs">
+  </div>
+  <span id="next">Next</span>
+  <span id="prev">Prev</span>
+</div>
+
 </body>
 </html>
