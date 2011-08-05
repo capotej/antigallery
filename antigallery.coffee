@@ -1,4 +1,3 @@
-# contains 0% jquery calls, could concievably even be used serverside
 class self.AntiGallery
   constructor: (@images) ->
     @currentIndex = 0
@@ -53,10 +52,15 @@ class self.AntiGallery
     @stripThumb image for image in @images
 
   renderWith: (@renderer) ->
+    @rendererCallbacks(@renderer)
+    @registerEvents()
+
+  rendererCallbacks: ->
     @renderer.renderMainImage @firstImage()
     @renderer.renderThumbs @thumbs()
+
+  registerEvents: ->
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
     @registerThumbClick @renderer.thumbElement()
-
 

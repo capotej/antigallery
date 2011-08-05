@@ -69,8 +69,14 @@
     };
     AntiGallery.prototype.renderWith = function(renderer) {
       this.renderer = renderer;
+      this.rendererCallbacks(this.renderer);
+      return this.registerEvents();
+    };
+    AntiGallery.prototype.rendererCallbacks = function() {
       this.renderer.renderMainImage(this.firstImage());
-      this.renderer.renderThumbs(this.thumbs());
+      return this.renderer.renderThumbs(this.thumbs());
+    };
+    AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
       return this.registerThumbClick(this.renderer.thumbElement());
