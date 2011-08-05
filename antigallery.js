@@ -89,20 +89,19 @@
     };
     AntiGallery.prototype.nextPage = function() {
       this.currentPageIndex += 1;
-      if (this.currentIndex > this.pages.length - 1) {
-        this.currentPageIndex = 0;
-      }
-      console.log(this.pages);
-      console.log(this.currentPageIndex);
-      return this.renderer.renderThumbs(this.pages[this.currentPageIndex]);
+      return this.renderThumbPage();
     };
     AntiGallery.prototype.previousPage = function() {
-      if (this.currentPageIndex === 0) {
-        this.currentPageIndex = this.images.length - 1;
-      } else {
-        this.currentPageIndex -= 1;
+      this.currentPageIndex -= 1;
+      return this.renderThumbPage();
+    };
+    AntiGallery.prototype.renderThumbPage = function() {
+      var offset;
+      offset = this.currentPageIndex % this.pages.length;
+      if (offset < 0) {
+        offset = this.currentPageIndex % this.pages.length * -1;
       }
-      return this.renderer.renderThumbs(this.pages[this.currentPageIndex]);
+      return this.renderer.renderThumbs(this.pages[offset]);
     };
     AntiGallery.prototype.nextImage = function() {
       this.currentIndex += 1;
@@ -139,7 +138,6 @@
       } else {
         this.pages = this.divideImages();
       }
-      console.log(this.pages);
       this.renderer.renderMainImage(this.firstImage());
       return this.renderer.renderThumbs(this.pages[0]);
     };

@@ -68,18 +68,18 @@ class self.AntiGallery
 
   nextPage: ->
     @currentPageIndex += 1
-    if @currentIndex > @pages.length - 1
-      @currentPageIndex = 0
-    console.log @pages
-    console.log @currentPageIndex
-    @renderer.renderThumbs @pages[@currentPageIndex]
+    @renderThumbPage()
 
   previousPage: ->
-    if @currentPageIndex == 0
-      @currentPageIndex = @images.length - 1
-    else
-      @currentPageIndex -= 1
-    @renderer.renderThumbs @pages[@currentPageIndex]
+    @currentPageIndex -= 1
+    @renderThumbPage()
+
+  renderThumbPage: ->
+    offset = @currentPageIndex % @pages.length
+    if offset < 0
+      offset = @currentPageIndex % @pages.length * -1
+    @renderer.renderThumbs @pages[offset]
+
 
   nextImage: ->
     @currentIndex += 1
@@ -107,7 +107,6 @@ class self.AntiGallery
     else
       @pages = @divideImages()
 
-    console.log @pages
     @renderer.renderMainImage @firstImage()
     @renderer.renderThumbs @pages[0]
 
