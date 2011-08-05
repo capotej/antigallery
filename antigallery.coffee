@@ -1,3 +1,16 @@
+Array::wrap = (start, length) ->
+  if length?
+    end = start + length
+    result = []
+    i = start
+
+    while i < end
+      result.push this[i % @length]
+      i++
+    result
+  else
+    this[start % @length]
+
 class self.AntiGallery
   constructor: (images) ->
     @currentIndex = 0
@@ -33,10 +46,19 @@ class self.AntiGallery
     img.src = image
     @cacheImage img
 
+  preloadNearbyThumbSets: ->
+    #stubbed
+
+  preloadNearbyImages: ->
+    #stubbed
+
   overThreshold: ->
     @images.length > @renderer.paginateThreshold
 
   stripThumb: (image) ->
+    image.thumb
+
+  stripId: (image) ->
     image.thumb
 
   stripFull: (image) ->
@@ -80,54 +102,48 @@ class self.AntiGallery
     @renderer.renderMainImage @imageForIndex(index)
 
   imageForIndex: (index) ->
-    @stripFull @images[index]
+    @stripFull @images.wrap(index)
 
   thumbForIndex: (index) ->
-    @stripThumb @images[index]
+    @stripThumb @images.wrap(index)
+
+  idForIndex: (index) ->
+    @stripId @images.wrap(index)
 
   nextPage: ->
     @currentPageIndex += 1
+    @currentIndex += @renderer.paginateThreshold
     @renderThumbPage()
-    @renderer.setActiveThumb @currentIndex
+    @renderer.renderMainImage @imageForIndex @currentIndex
+    @renderer.setActiveThumb @idForIndex @currentIndex
 
   previousPage: ->
     @currentPageIndex -= 1
+    @currentIndex -= @renderer.paginateThreshold
     @renderThumbPage()
-    @renderer.setActiveThumb @currentIndex
+    @renderer.renderMainImage @imageForIndex @currentIndex
+    @renderer.setActiveThumb @idForIndex @currentIndex
 
   renderThumbPage: ->
-    offset = @currentPageIndex % @pages.length
-    offset *= -1 if offset < 0
     @preloadNearbyThumbSets()
     @preloadNearbyImages()
-    @renderer.renderThumbs @pages[offset]
-
-  preloadNearbyThumbSets: ->
-    #stubbed
-
-  preloadNearbyImages: ->
-    #stubbed
+    @renderer.renderThumbs @pages.wrap(@currentPageIndex)
 
   nextImage: ->
     @currentIndex += 1
-    if @currentIndex > @images.length - 1
-      @currentIndex = 0
-    @renderer.setActiveThumb @currentIndex
-    @renderer.renderMainImage @imageForIndex(@currentIndex)
+    @renderer.setActiveThumb @idForIndex @currentIndex
+    @renderer.renderMainImage @imageForIndex @currentIndex
 
   previousImage: ->
-    if @currentIndex == 0
-      @currentIndex = @images.length - 1
-    else
-      @currentIndex -= 1
-    @renderer.setActiveThumb @currentIndex
-    @renderer.renderMainImage @imageForIndex(@currentIndex)
+    @currentIndex -= 1
+    @renderer.setActiveThumb @idForIndex @currentIndex
+    @renderer.renderMainImage @imageForIndex @currentIndex
 
   stripThumbs: (set) ->
     @stripThumb image for image in set
 
   renderWith: (@renderer) ->
-    @rendererCallbacks(@renderer)
+    @rendererCallbacks()
     @registerEvents()
 
   rendererCallbacks: ->

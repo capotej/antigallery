@@ -28,7 +28,6 @@ class self.ExampleRenderer
     ###
     $(sel, @container())
 
-
   thumbIndexName: ->
     ###
     The name of the data element that holds the thumb index (how configurable is that?!)

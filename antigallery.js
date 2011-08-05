@@ -1,5 +1,20 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  Array.prototype.wrap = function(start, length) {
+    var end, i, result;
+    if (length != null) {
+      end = start + length;
+      result = [];
+      i = start;
+      while (i < end) {
+        result.push(this[i % this.length]);
+        i++;
+      }
+      return result;
+    } else {
+      return this[start % this.length];
+    }
+  };
   self.AntiGallery = (function() {
     function AntiGallery(images) {
       var image;
@@ -56,10 +71,15 @@
       img.src = image;
       return this.cacheImage(img);
     };
+    AntiGallery.prototype.preloadNearbyThumbSets = function() {};
+    AntiGallery.prototype.preloadNearbyImages = function() {};
     AntiGallery.prototype.overThreshold = function() {
       return this.images.length > this.renderer.paginateThreshold;
     };
     AntiGallery.prototype.stripThumb = function(image) {
+      return image.thumb;
+    };
+    AntiGallery.prototype.stripId = function(image) {
       return image.thumb;
     };
     AntiGallery.prototype.stripFull = function(image) {
@@ -111,48 +131,41 @@
       return this.renderer.renderMainImage(this.imageForIndex(index));
     };
     AntiGallery.prototype.imageForIndex = function(index) {
-      return this.stripFull(this.images[index]);
+      return this.stripFull(this.images.wrap(index));
     };
     AntiGallery.prototype.thumbForIndex = function(index) {
-      return this.stripThumb(this.images[index]);
+      return this.stripThumb(this.images.wrap(index));
+    };
+    AntiGallery.prototype.idForIndex = function(index) {
+      return this.stripId(this.images.wrap(index));
     };
     AntiGallery.prototype.nextPage = function() {
       this.currentPageIndex += 1;
+      this.currentIndex += this.renderer.paginateThreshold;
       this.renderThumbPage();
-      return this.renderer.setActiveThumb(this.currentIndex);
+      this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+      return this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
     };
     AntiGallery.prototype.previousPage = function() {
       this.currentPageIndex -= 1;
+      this.currentIndex -= this.renderer.paginateThreshold;
       this.renderThumbPage();
-      return this.renderer.setActiveThumb(this.currentIndex);
+      this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+      return this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
     };
     AntiGallery.prototype.renderThumbPage = function() {
-      var offset;
-      offset = this.currentPageIndex % this.pages.length;
-      if (offset < 0) {
-        offset *= -1;
-      }
       this.preloadNearbyThumbSets();
       this.preloadNearbyImages();
-      return this.renderer.renderThumbs(this.pages[offset]);
+      return this.renderer.renderThumbs(this.pages.wrap(this.currentPageIndex));
     };
-    AntiGallery.prototype.preloadNearbyThumbSets = function() {};
-    AntiGallery.prototype.preloadNearbyImages = function() {};
     AntiGallery.prototype.nextImage = function() {
       this.currentIndex += 1;
-      if (this.currentIndex > this.images.length - 1) {
-        this.currentIndex = 0;
-      }
-      this.renderer.setActiveThumb(this.currentIndex);
+      this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
     AntiGallery.prototype.previousImage = function() {
-      if (this.currentIndex === 0) {
-        this.currentIndex = this.images.length - 1;
-      } else {
-        this.currentIndex -= 1;
-      }
-      this.renderer.setActiveThumb(this.currentIndex);
+      this.currentIndex -= 1;
+      this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
       return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
     };
     AntiGallery.prototype.stripThumbs = function(set) {
@@ -166,7 +179,7 @@
     };
     AntiGallery.prototype.renderWith = function(renderer) {
       this.renderer = renderer;
-      this.rendererCallbacks(this.renderer);
+      this.rendererCallbacks();
       return this.registerEvents();
     };
     AntiGallery.prototype.rendererCallbacks = function() {

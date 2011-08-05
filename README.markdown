@@ -37,13 +37,6 @@ $(document).ready(function(){
 Check out the examples/ folder for an example_renderer that responds to all callbacks.
 
 
-## Todo
-* Callback for active image
-* Preloading
-* Effect handling
-
-
-
 
 ## License
 Anti Gallery is released under the MIT license.
