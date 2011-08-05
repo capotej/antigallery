@@ -45,15 +45,20 @@
         return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + object.thumb + "\" data-thumb-index=\"" + object.id + "\"/>");
       }, this));
     };
+    ExampleRenderer.prototype.renderNavForPages = function(length) {
+      /*
+          Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index
+          */      var i, _results;
+      _results = [];
+      for (i = 0; 0 <= length ? i < length : i > length; 0 <= length ? i++ : i--) {
+        _results.push(this.select('#page_nav').append("<li class=\"page\" data-thumbset-index=\"" + i + "\">Page</li>"));
+      }
+      return _results;
+    };
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
           */      return this.select('#main_image').empty().append("<img src=\"" + image + "\"/>");
-    };
-    ExampleRenderer.prototype.renderThumbPageCounter = function(index) {
-      /*
-          Gets called with the page number of the thumbset till there is no more, used for navigation
-          */      return this.select('#thumb_nav').append("<li data-thumbset-index=\"" + index + "\">" + index + "</li>");
     };
     ExampleRenderer.prototype.nextButton = function() {
       /*
@@ -79,6 +84,11 @@
       /*
           Needs to return a scoped selector to all of the thumb img elements for the gallery
           */      return this.select('.thumb');
+    };
+    ExampleRenderer.prototype.pageElement = function() {
+      /*
+          Needs to return a scoped selector to all of the thumb img elements for the gallery
+          */      return this.select('.page');
     };
     return ExampleRenderer;
   })();

@@ -49,17 +49,18 @@ class self.ExampleRenderer
     $(thumbs).each (index, object) =>
       @select('#thumbs').append("<img class=\"thumb\" src=\"#{object.thumb}\" data-thumb-index=\"#{object.id}\"/>")
 
+  renderNavForPages: (length) ->
+    ###
+    Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index
+    ###
+    @select('#page_nav').append("<li class=\"page\" data-thumbset-index=\"#{i}\">Page</li>") for i in [0...length]
+
   renderMainImage: (image) ->
     ###
     Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
     ###
     @select('#main_image').empty().append("<img src=\"#{image}\"/>")
 
-  renderThumbPageCounter: (index) ->
-    ###
-    Gets called with the page number of the thumbset till there is no more, used for navigation
-    ###
-    @select('#thumb_nav').append("<li data-thumbset-index=\"#{index}\">#{index}</li>")
 
   nextButton: ->
     ###
@@ -85,10 +86,15 @@ class self.ExampleRenderer
     ###
     @select('#prev_thumb')
 
-
   thumbElement: ->
     ###
     Needs to return a scoped selector to all of the thumb img elements for the gallery
     ###
     @select('.thumb')
+
+  pageElement: ->
+    ###
+    Needs to return a scoped selector to all of the thumb img elements for the gallery
+    ###
+    @select('.page')
 

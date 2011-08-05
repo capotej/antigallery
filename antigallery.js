@@ -80,6 +80,14 @@
         return this.setImageAndIndex(index);
       }, this));
     };
+    AntiGallery.prototype.registerPageCounter = function(button) {
+      return button.click(__bind(function(evt) {
+        var index;
+        evt.preventDefault();
+        index = $(evt.target).data(this.renderer.thumbSetIndexName());
+        return this.renderer.renderThumbs(this.pages[index]);
+      }, this));
+    };
     AntiGallery.prototype.setImageAndIndex = function(index) {
       this.currentIndex = index;
       return this.renderer.renderMainImage(this.imageForIndex(index));
@@ -138,6 +146,7 @@
       } else {
         this.pages = this.divideImages();
       }
+      this.renderer.renderNavForPages(this.pages.length);
       this.renderer.renderMainImage(this.firstImage());
       return this.renderer.renderThumbs(this.pages[0]);
     };
@@ -146,6 +155,7 @@
       this.registerNext(this.renderer.nextButton());
       this.registerThumbPrevious(this.renderer.previousPageButton());
       this.registerThumbNext(this.renderer.nextPageButton());
+      this.registerPageCounter(this.renderer.pageElement());
       return this.registerThumbClick(this.renderer.thumbElement());
     };
     return AntiGallery;

@@ -20,7 +20,6 @@ class self.AntiGallery
     arr.push sub_arr unless sub_arr == []
     arr
 
-
   overThreshold: ->
     @images.length > @renderer.paginateThreshold
 
@@ -58,6 +57,12 @@ class self.AntiGallery
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbIndexName())
       @setImageAndIndex(index)
+
+  registerPageCounter: (button) ->
+    button.click (evt) =>
+      evt.preventDefault()
+      index = $(evt.target).data(@renderer.thumbSetIndexName())
+      @renderer.renderThumbs @pages[index]
 
   setImageAndIndex: (index) ->
     @currentIndex = index
@@ -105,7 +110,7 @@ class self.AntiGallery
       @pages = [@images]
     else
       @pages = @divideImages()
-
+    @renderer.renderNavForPages(@pages.length)
     @renderer.renderMainImage @firstImage()
     @renderer.renderThumbs @pages[0]
 
@@ -114,5 +119,6 @@ class self.AntiGallery
     @registerNext @renderer.nextButton()
     @registerThumbPrevious @renderer.previousPageButton()
     @registerThumbNext @renderer.nextPageButton()
+    @registerPageCounter @renderer.pageElement()
     @registerThumbClick @renderer.thumbElement()
 
