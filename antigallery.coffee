@@ -168,3 +168,20 @@ class self.AntiGallery
     @registerPageCounter @renderer.pageElement()
     @registerThumbClick @renderer.thumbElement()
 
+
+class AntiGallery.Paginator
+  constructor: (@collection) ->
+    @currentIndex = 0
+
+  cursor: ->
+    @currentIndex
+
+  increment: (num) ->
+    @currentIndex += num
+
+
+
+
+
+
+

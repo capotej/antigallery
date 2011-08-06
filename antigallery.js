@@ -211,4 +211,17 @@
     };
     return AntiGallery;
   })();
+  AntiGallery.Paginator = (function() {
+    function Paginator(collection) {
+      this.collection = collection;
+      this.currentIndex = 0;
+    }
+    Paginator.prototype.cursor = function() {
+      return this.currentIndex;
+    };
+    Paginator.prototype.increment = function(num) {
+      return this.currentIndex += num;
+    };
+    return Paginator;
+  })();
 }).call(this);
