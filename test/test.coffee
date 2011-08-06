@@ -5,21 +5,37 @@ $ ->
     { full: '../examples/images/two.png',   thumb: '../examples/images/two_thumb.jpeg' },
     { full: '../examples/images/three.png', thumb: '../examples/images/three_thumb.jpeg' },
     { full: '../examples/images/four.png', thumb: '../examples/images/four_thumb.jpeg' },
+    { full: '../examples/images/five.png', thumb: '../examples/images/five_thumb.jpeg' },
     ]
 
 
   module "Anti Gallery Class: Paginator"
 
-  test "should be 0 on start", ->
-    paginator = new AntiGallery.Paginator
-    equal(paginator.cursor(), 0)
+  test "divide thumbs should distribute the thumbs evenly", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    equal(paginator.totalPages(), 2)
 
-  test "should be 3 upon going forwards three times", ->
-    paginator = new AntiGallery.Paginator
-    paginator.increment(3)
-    equal(paginator.cursor(), 3)
+  test "should return the proper page index", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    equal(paginator.page(0).length, 3)
+    equal(paginator.page(1).length, 2)
 
-  test "should wrap and be 1 upon going forwards 5 times", ->
-    paginator = new AntiGallery.Paginator
-    paginator.increment(5)
-    equal(paginator.cursor(), 1)
+  test "should return the next page, after next page is called", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    equal(paginator.nextPage().length, 2)
+
+  test "should return the last page, after prev page is called on page 0", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    equal(paginator.prevPage().length, 2)
+
+  test "cursor should follow along page changes", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    paginator.nextPage()
+    equal(paginator.cursor, 3) # 4 - 1
+
+  test "cursor should follow along page changes and wrap", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    paginator.nextPage()
+    paginator.nextPage()
+    equal(paginator.cursor, 0)
+

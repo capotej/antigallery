@@ -13,29 +13,10 @@ class self.AntiGallery
     @images = (@tagImage(image,_i) for image in images)
     @preloadImages(@stripThumbs(@images[0...5]))
 
-  mod: (a, b) =>
-    return 0 if b == 0
-    r = a % b
-    if r >= 0
-      r
-    else
-      @mod a + b, b
-
   tagImage: (image, i) ->
     image.id = i
     image
 
-  divideImages: ->
-    arr = []
-    sub_arr = []
-    $(@images).each (index, image) ->
-      index = index + 1
-      sub_arr.push image
-      if index % 5 == 0
-        arr.push sub_arr
-        sub_arr = []
-    arr.push sub_arr unless sub_arr == []
-    arr
 
   cacheImage: (image) ->
     @imageCache[image.src]
@@ -170,14 +151,36 @@ class self.AntiGallery
 
 
 class AntiGallery.Paginator
-  constructor: (@collection) ->
+  constructor: (@collection, perPage) ->
     @currentIndex = 0
+    @_pages = @dividePages(@collection, perPage)
 
   cursor: ->
     @currentIndex
 
-  increment: (num) ->
+  increment: (num = 1) ->
     @currentIndex += num
+
+  pages: ->
+    @_pages
+
+  page: (index) ->
+    @_pages[index]
+
+  totalPages: ->
+    @_pages.length
+
+  dividePages: (collection, perPage) ->
+    arr = []
+    sub_arr = []
+    $(collection).each (index, image) ->
+      index = index + 1
+      sub_arr.push image
+      if index % perPage == 0
+        arr.push sub_arr
+        sub_arr = []
+    arr.push sub_arr unless sub_arr == []
+    arr
 
 
 

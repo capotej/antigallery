@@ -11,7 +11,7 @@
   }, this);
   self.AntiGallery = (function() {
     function AntiGallery(images) {
-      this.mod = __bind(this.mod, this);      var image;
+      var image;
       this.currentIndex = 0;
       this.currentPageIndex = 0;
       this.imageCache = {};
@@ -26,38 +26,9 @@
       }).call(this);
       this.preloadImages(this.stripThumbs(this.images.slice(0, 5)));
     }
-    AntiGallery.prototype.mod = function(a, b) {
-      var r;
-      if (b === 0) {
-        return 0;
-      }
-      r = a % b;
-      if (r >= 0) {
-        return r;
-      } else {
-        return this.mod(a + b, b);
-      }
-    };
     AntiGallery.prototype.tagImage = function(image, i) {
       image.id = i;
       return image;
-    };
-    AntiGallery.prototype.divideImages = function() {
-      var arr, sub_arr;
-      arr = [];
-      sub_arr = [];
-      $(this.images).each(function(index, image) {
-        index = index + 1;
-        sub_arr.push(image);
-        if (index % 5 === 0) {
-          arr.push(sub_arr);
-          return sub_arr = [];
-        }
-      });
-      if (sub_arr !== []) {
-        arr.push(sub_arr);
-      }
-      return arr;
     };
     AntiGallery.prototype.cacheImage = function(image) {
       return this.imageCache[image.src];
@@ -212,15 +183,45 @@
     return AntiGallery;
   })();
   AntiGallery.Paginator = (function() {
-    function Paginator(collection) {
+    function Paginator(collection, perPage) {
       this.collection = collection;
       this.currentIndex = 0;
+      this._pages = this.dividePages(this.collection, perPage);
     }
     Paginator.prototype.cursor = function() {
       return this.currentIndex;
     };
     Paginator.prototype.increment = function(num) {
+      if (num == null) {
+        num = 1;
+      }
       return this.currentIndex += num;
+    };
+    Paginator.prototype.pages = function() {
+      return this._pages;
+    };
+    Paginator.prototype.page = function(index) {
+      return this._pages[index];
+    };
+    Paginator.prototype.totalPages = function() {
+      return this._pages.length;
+    };
+    Paginator.prototype.dividePages = function(collection, perPage) {
+      var arr, sub_arr;
+      arr = [];
+      sub_arr = [];
+      $(collection).each(function(index, image) {
+        index = index + 1;
+        sub_arr.push(image);
+        if (index % perPage === 0) {
+          arr.push(sub_arr);
+          return sub_arr = [];
+        }
+      });
+      if (sub_arr !== []) {
+        arr.push(sub_arr);
+      }
+      return arr;
     };
     return Paginator;
   })();
