@@ -80,19 +80,14 @@ class self.AntiGallery
   idForIndex: (index) ->
     @stripId @images[@mod(index, @images.length)]
 
-  relativeIndex: ->
-    @mod(@images.length, @currentIndex)# - @renderer.paginateThreshold
-
   nextPage: ->
-    @currentPageIndex += 1
-    @currentIndex += @renderer.paginateThreshold
+    @paginator.nextPage()
     @renderThumbPage()
-    @renderer.renderMainImage @imageForIndex @currentIndex
-    @renderer.setActiveThumb @idForIndex @currentIndex
+    @renderer.setActiveThumb @paginator.relativeIndex
+    @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   previousPage: ->
-    @currentPageIndex -= 1
-    @currentIndex -= @renderer.paginateThreshold
+    @paginator.previousPage()
     @renderThumbPage()
     @renderer.renderMainImage @imageForIndex @currentIndex
     @renderer.setActiveThumb @idForIndex @currentIndex
@@ -100,17 +95,17 @@ class self.AntiGallery
   renderThumbPage: ->
     @preloadNearbyThumbSets()
     @preloadNearbyImages()
-    @renderer.renderThumbs @pages[@mod(@currentPageIndex, @pages.length)]
+    @renderer.renderThumbs @stripThumbs @paginator.currentPage()
 
   nextImage: ->
-    @currentIndex += 1
-    @renderer.setActiveThumb @idForIndex @currentIndex
-    @renderer.renderMainImage @imageForIndex @currentIndex
+    @paginator.nextItem()
+    @renderer.setActiveThumb @paginator.relativeIndex
+    @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   previousImage: ->
-    @currentIndex -= 1
-    @renderer.setActiveThumb @idForIndex @currentIndex
-    @renderer.renderMainImage @imageForIndex @currentIndex
+    @paginator.previousItem()
+    @renderer.setActiveThumb @paginator.relativeIndex
+    @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   stripThumbs: (set) ->
     @stripThumb image for image in set

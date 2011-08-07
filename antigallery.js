@@ -93,19 +93,14 @@
     AntiGallery.prototype.idForIndex = function(index) {
       return this.stripId(this.images[this.mod(index, this.images.length)]);
     };
-    AntiGallery.prototype.relativeIndex = function() {
-      return this.mod(this.images.length, this.currentIndex);
-    };
     AntiGallery.prototype.nextPage = function() {
-      this.currentPageIndex += 1;
-      this.currentIndex += this.renderer.paginateThreshold;
+      this.paginator.nextPage();
       this.renderThumbPage();
-      this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
-      return this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
+      this.renderer.setActiveThumb(this.paginator.relativeIndex);
+      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.previousPage = function() {
-      this.currentPageIndex -= 1;
-      this.currentIndex -= this.renderer.paginateThreshold;
+      this.paginator.previousPage();
       this.renderThumbPage();
       this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
       return this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
@@ -113,17 +108,17 @@
     AntiGallery.prototype.renderThumbPage = function() {
       this.preloadNearbyThumbSets();
       this.preloadNearbyImages();
-      return this.renderer.renderThumbs(this.pages[this.mod(this.currentPageIndex, this.pages.length)]);
+      return this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
     };
     AntiGallery.prototype.nextImage = function() {
-      this.currentIndex += 1;
-      this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
-      return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+      this.paginator.nextItem();
+      this.renderer.setActiveThumb(this.paginator.relativeIndex);
+      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.previousImage = function() {
-      this.currentIndex -= 1;
-      this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
-      return this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
+      this.paginator.previousItem();
+      this.renderer.setActiveThumb(this.paginator.relativeIndex);
+      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.stripThumbs = function(set) {
       var image, _i, _len, _results;
