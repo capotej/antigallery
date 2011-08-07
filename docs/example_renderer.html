@@ -71,12 +71,17 @@
               
               <div class="method">
                 <h4>renderThumbs(thumbs)</h4>
-                <p>Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object</p>
+                <p>Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index</p>
               </div>
               
               <div class="method">
                 <h4>renderNavForPages(length)</h4>
                 <p>Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index</p>
+              </div>
+              
+              <div class="method">
+                <h4>setActiveThumb(index)</h4>
+                <p>Takes the index of the currently displayed image, used for styling the active thumb</p>
               </div>
               
               <div class="method">
@@ -111,7 +116,7 @@
               
               <div class="method">
                 <h4>pageElement()</h4>
-                <p>Needs to return a scoped selector to all of the thumb img elements for the gallery</p>
+                <p>Needs to return a scoped selector to all of the direct page link elements for the gallery</p>
               </div>
               
             </div>
