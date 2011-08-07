@@ -62,7 +62,10 @@ class self.AntiGallery
     button.click (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbSetIndexName())
-      @renderer.renderThumbs @pages[index]
+      @paginator.gotoPage(index)
+      @renderThumbPage()
+      @renderer.setActiveThumb @paginator.relativeIndex
+      @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   nextPage: ->
     @paginator.nextPage()
@@ -125,8 +128,9 @@ class AntiGallery.Paginator
   pages: ->
     @_pages
 
-  page: (index) ->
-    @_pages[index]
+  gotoPage: (index) ->
+    @relativeIndex = 0
+    @pageIndex = index
 
   gotoItem: (index) ->
     @relativeIndex = index

@@ -93,7 +93,7 @@
     };
     ExampleRenderer.prototype.pageElement = function() {
       /*
-          Needs to return a scoped selector to all of the thumb img elements for the gallery
+          Needs to return a scoped selector to all of the direct page link elements for the gallery
           */      return this.select('.page');
     };
     return ExampleRenderer;

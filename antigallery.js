@@ -75,7 +75,10 @@
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbSetIndexName());
-        return this.renderer.renderThumbs(this.pages[index]);
+        this.paginator.gotoPage(index);
+        this.renderThumbPage();
+        this.renderer.setActiveThumb(this.paginator.relativeIndex);
+        return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
       }, this));
     };
     AntiGallery.prototype.nextPage = function() {
@@ -145,8 +148,9 @@
     Paginator.prototype.pages = function() {
       return this._pages;
     };
-    Paginator.prototype.page = function(index) {
-      return this._pages[index];
+    Paginator.prototype.gotoPage = function(index) {
+      this.relativeIndex = 0;
+      return this.pageIndex = index;
     };
     Paginator.prototype.gotoItem = function(index) {
       return this.relativeIndex = index;

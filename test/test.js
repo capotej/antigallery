@@ -28,8 +28,8 @@
     test("should return the proper page index", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      equal(paginator.page(0).length, 3);
-      return equal(paginator.page(1).length, 2);
+      equal(paginator.gotoPage(0).length, 3);
+      return equal(paginator.gotoPage(1).length, 2);
     });
     test("should return the next page, after next page is called", function() {
       var paginator;
