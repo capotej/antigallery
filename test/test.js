@@ -19,7 +19,7 @@
         thumb: '../examples/images/five_thumb.jpeg'
       }
     ];
-    module("Anti Gallery Class: Paginator");
+    module("AntiGallery.Paginator");
     test("divide thumbs should distribute the thumbs evenly", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
@@ -62,11 +62,22 @@
       paginator.nextItem();
       return equal(paginator.currentItem(), IMAGES[1]);
     });
-    return test("previousItem should return the previous item on the page, wrapping to the last item if needed", function() {
+    test("previousItem should return the previous item on the page, wrapping to the last item if needed", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
       paginator.previousItem();
       return equal(paginator.currentItem(), IMAGES[4]);
+    });
+    module("AntiGallery");
+    return test("renders the first image and first thumbset on render()", function() {
+      var gallery, mock, renderer;
+      renderer = new ExampleRenderer("div");
+      mock = sinon.mock(renderer);
+      mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb, IMAGES[3].thumb, IMAGES[4].thumb]);
+      mock.expects("renderMainImage").once().withArgs(IMAGES[0].full);
+      gallery = new AntiGallery(IMAGES, renderer);
+      gallery.render();
+      return mock.verify();
     });
   });
 }).call(this);

@@ -1,37 +1,17 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  window.mod = __bind(function(a, b) {
-    var r;
-    r = a % b;
-    if (r >= 0) {
-      return r;
-    } else {
-      return window.mod(a + b, b);
-    }
-  }, this);
   self.AntiGallery = (function() {
-    function AntiGallery(images) {
-      var image;
-      this.currentIndex = 0;
-      this.currentPageIndex = 0;
+    function AntiGallery(images, renderer) {
+      this.renderer = renderer;
       this.imageCache = {};
-      this.images = (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = images.length; _i < _len; _i++) {
-          image = images[_i];
-          _results.push(this.tagImage(image, _i));
-        }
-        return _results;
-      }).call(this);
-      this.preloadImages(this.stripThumbs(this.images.slice(0, 5)));
+      this.paginator = new AntiGallery.Paginator(images, this.renderer.paginateThreshold);
     }
     AntiGallery.prototype.tagImage = function(image, i) {
       image.id = i;
       return image;
     };
     AntiGallery.prototype.cacheImage = function(image) {
-      return this.imageCache[image.src];
+      return this.imageCache[image.src] = image;
     };
     AntiGallery.prototype.preloadImages = function(images) {
       var image, _i, _len, _results;
@@ -50,9 +30,6 @@
     };
     AntiGallery.prototype.preloadNearbyThumbSets = function() {};
     AntiGallery.prototype.preloadNearbyImages = function() {};
-    AntiGallery.prototype.overThreshold = function() {
-      return this.images.length > this.renderer.paginateThreshold;
-    };
     AntiGallery.prototype.stripThumb = function(image) {
       return image.thumb;
     };
@@ -157,20 +134,14 @@
       }
       return _results;
     };
-    AntiGallery.prototype.renderWith = function(renderer) {
-      this.renderer = renderer;
+    AntiGallery.prototype.render = function() {
       this.rendererCallbacks();
       return this.registerEvents();
     };
     AntiGallery.prototype.rendererCallbacks = function() {
-      if (!this.overThreshold()) {
-        this.pages = [this.images];
-      } else {
-        this.pages = this.divideImages();
-      }
-      this.renderer.renderNavForPages(this.pages.length);
-      this.renderer.renderThumbs(this.pages[0]);
-      return this.setImageAndIndex(0);
+      this.renderer.renderNavForPages(this.paginator.pages().length);
+      this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
+      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());
@@ -189,7 +160,7 @@
       this.collection = collection;
       this.pageIndex = 0;
       this.relativeIndex = 0;
-      this._pages = this.dividePages(this.collection, perPage);
+      this._pages = dividePages(this.collection, perPage);
     }
     Paginator.prototype.pages = function() {
       return this._pages;
@@ -257,7 +228,7 @@
           Gets current item of current page
           */      return this.currentPage()[this.relativeIndex];
     };
-    Paginator.prototype.dividePages = function(collection, perPage) {
+    self.dividePages = function(collection, perPage) {
       /*
           Divides a collection into pages
           */      var arr, sub_arr;

@@ -8,8 +8,7 @@ $ ->
     { full: '../examples/images/five.png', thumb: '../examples/images/five_thumb.jpeg' }, # page 2
     ]
 
-
-  module "Anti Gallery Class: Paginator"
+  module "AntiGallery.Paginator"
 
   test "divide thumbs should distribute the thumbs evenly", ->
     paginator = new AntiGallery.Paginator(IMAGES, 3)
@@ -51,3 +50,14 @@ $ ->
     paginator.previousItem()
     equal(paginator.currentItem(), IMAGES[4])
 
+
+  module "AntiGallery"
+
+  test "renders the first image and first thumbset on render()", ->
+    renderer = new ExampleRenderer("div")
+    mock = sinon.mock(renderer)
+    mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb, IMAGES[3].thumb, IMAGES[4].thumb])
+    mock.expects("renderMainImage").once().withArgs(IMAGES[0].full)
+    gallery = new AntiGallery(IMAGES, renderer)
+    gallery.render()
+    mock.verify()

@@ -1,25 +1,15 @@
-window.mod = (a, b) =>
-  r = a % b
-  if r >= 0
-    r
-  else
-    window.mod a + b, b
-
 class self.AntiGallery
-  constructor: (images) ->
-    @currentIndex = 0
-    @currentPageIndex = 0
+  constructor: (images, @renderer) ->
     @imageCache = {}
-    @images = (@tagImage(image,_i) for image in images)
-    @preloadImages(@stripThumbs(@images[0...5]))
+    @paginator = new AntiGallery.Paginator(images, @renderer.paginateThreshold)
+    #@preloadImages(@stripThumbs(@images[0...5]))
 
   tagImage: (image, i) ->
     image.id = i
     image
 
-
   cacheImage: (image) ->
-    @imageCache[image.src]
+    @imageCache[image.src] = image
 
   preloadImages: (images) ->
     @preloadImage image for image in images
@@ -34,9 +24,6 @@ class self.AntiGallery
 
   preloadNearbyImages: ->
     #stubbed
-
-  overThreshold: ->
-    @images.length > @renderer.paginateThreshold
 
   stripThumb: (image) ->
     image.thumb
@@ -128,18 +115,14 @@ class self.AntiGallery
   stripThumbs: (set) ->
     @stripThumb image for image in set
 
-  renderWith: (@renderer) ->
+  render: ->
     @rendererCallbacks()
     @registerEvents()
 
   rendererCallbacks: ->
-    unless @overThreshold()
-      @pages = [@images]
-    else
-      @pages = @divideImages()
-    @renderer.renderNavForPages(@pages.length)
-    @renderer.renderThumbs @pages[0]
-    @setImageAndIndex(0)
+    @renderer.renderNavForPages(@paginator.pages().length)
+    @renderer.renderThumbs @stripThumbs @paginator.currentPage()
+    @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   registerEvents: ->
     @registerPrevious @renderer.previousButton()
@@ -158,7 +141,7 @@ class AntiGallery.Paginator
   constructor: (@collection, perPage) ->
     @pageIndex = 0
     @relativeIndex = 0
-    @_pages = @dividePages(@collection, perPage)
+    @_pages = dividePages(@collection, perPage)
 
   pages: ->
     @_pages
@@ -225,7 +208,7 @@ class AntiGallery.Paginator
     ###
     @currentPage()[@relativeIndex]
 
-  dividePages: (collection, perPage) ->
+  self.dividePages = (collection, perPage) ->
     ###
     Divides a collection into pages
     ###
