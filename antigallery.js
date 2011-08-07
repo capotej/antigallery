@@ -183,20 +183,14 @@
     return AntiGallery;
   })();
   AntiGallery.Paginator = (function() {
-    function Paginator(collection, perPage) {
+    /*
+      Takes a collection, and lets you page item by item, or page by page
+      */    function Paginator(collection, perPage) {
       this.collection = collection;
-      this.currentIndex = 0;
+      this.pageIndex = 0;
+      this.relativeIndex = 0;
       this._pages = this.dividePages(this.collection, perPage);
     }
-    Paginator.prototype.cursor = function() {
-      return this.currentIndex;
-    };
-    Paginator.prototype.increment = function(num) {
-      if (num == null) {
-        num = 1;
-      }
-      return this.currentIndex += num;
-    };
     Paginator.prototype.pages = function() {
       return this._pages;
     };
@@ -206,8 +200,67 @@
     Paginator.prototype.totalPages = function() {
       return this._pages.length;
     };
+    Paginator.prototype.nextPage = function() {
+      /*
+          Forwards the cursor a whole page length forwards, setting it at the first place of that page
+          */      var result;
+      this.relativeIndex = 0;
+      result = this.pageIndex + 1;
+      if (result > this._pages.length - 1) {
+        return this.pageIndex = 0;
+      } else {
+        return this.pageIndex = result;
+      }
+    };
+    Paginator.prototype.previousPage = function() {
+      /*
+          Reverses the cursor a whole page length forwards, setting it at the first place of that page
+          */      var result;
+      this.relativeIndex = 0;
+      result = this.pageIndex - 1;
+      if (result < 0) {
+        return this.pageIndex = this._pages.length - 1;
+      } else {
+        return this.pageIndex = result;
+      }
+    };
+    Paginator.prototype.currentPage = function() {
+      /*
+          Gets current page
+          */      return this._pages[this.pageIndex];
+    };
+    Paginator.prototype.nextItem = function() {
+      /*
+          Forwards the cursor one item forward, turning the page if it has to
+          */      var result;
+      result = this.relativeIndex + 1;
+      if (result > this.currentPage().length - 1) {
+        return this.nextPage();
+      } else {
+        return this.relativeIndex = result;
+      }
+    };
+    Paginator.prototype.previousItem = function() {
+      /*
+          Reverses the cursor one item forward, turning the page if it has to
+          */      var result;
+      result = this.relativeIndex - 1;
+      if (result < 0) {
+        this.previousPage();
+        return this.relativeIndex = this.currentPage().length - 1;
+      } else {
+        return this.relativeIndex = result;
+      }
+    };
+    Paginator.prototype.currentItem = function() {
+      /*
+          Gets current item of current page
+          */      return this.currentPage()[this.relativeIndex];
+    };
     Paginator.prototype.dividePages = function(collection, perPage) {
-      var arr, sub_arr;
+      /*
+          Divides a collection into pages
+          */      var arr, sub_arr;
       arr = [];
       sub_arr = [];
       $(collection).each(function(index, image) {

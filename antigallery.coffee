@@ -151,15 +151,14 @@ class self.AntiGallery
 
 
 class AntiGallery.Paginator
+  ###
+  Takes a collection, and lets you page item by item, or page by page
+  ###
+
   constructor: (@collection, perPage) ->
-    @currentIndex = 0
+    @pageIndex = 0
+    @relativeIndex = 0
     @_pages = @dividePages(@collection, perPage)
-
-  cursor: ->
-    @currentIndex
-
-  increment: (num = 1) ->
-    @currentIndex += num
 
   pages: ->
     @_pages
@@ -170,7 +169,66 @@ class AntiGallery.Paginator
   totalPages: ->
     @_pages.length
 
+  nextPage: ->
+    ###
+    Forwards the cursor a whole page length forwards, setting it at the first place of that page
+    ###
+    @relativeIndex = 0
+    result = @pageIndex + 1
+    if result > @_pages.length - 1
+      @pageIndex = 0
+    else
+      @pageIndex = result
+
+  previousPage: ->
+    ###
+    Reverses the cursor a whole page length forwards, setting it at the first place of that page
+    ###
+    @relativeIndex = 0
+    result = @pageIndex - 1
+    if result < 0
+      @pageIndex = @_pages.length - 1
+    else
+      @pageIndex = result
+
+
+  currentPage: ->
+    ###
+    Gets current page
+    ###
+    @_pages[@pageIndex]
+
+  nextItem: ->
+    ###
+    Forwards the cursor one item forward, turning the page if it has to
+    ###
+    result = @relativeIndex + 1
+    if result > @currentPage().length - 1
+      @nextPage()
+    else
+      @relativeIndex = result
+
+  previousItem: ->
+    ###
+    Reverses the cursor one item forward, turning the page if it has to
+    ###
+    result = @relativeIndex - 1
+    if result < 0
+      @previousPage()
+      @relativeIndex = @currentPage().length - 1
+    else
+      @relativeIndex = result
+
+  currentItem: ->
+    ###
+    Gets current item of current page
+    ###
+    @currentPage()[@relativeIndex]
+
   dividePages: (collection, perPage) ->
+    ###
+    Divides a collection into pages
+    ###
     arr = []
     sub_arr = []
     $(collection).each (index, image) ->

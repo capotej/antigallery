@@ -34,25 +34,39 @@
     test("should return the next page, after next page is called", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      return equal(paginator.nextPage().length, 2);
+      paginator.nextPage();
+      return equal(paginator.currentPage().length, 2);
     });
     test("should return the last page, after prev page is called on page 0", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      return equal(paginator.prevPage().length, 2);
+      paginator.previousPage();
+      return equal(paginator.currentPage().length, 2);
     });
-    test("cursor should follow along page changes", function() {
+    test("currentItem should always be the first of the page on next page", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
       paginator.nextPage();
-      return equal(paginator.cursor, 3);
+      return equal(paginator.currentItem(), IMAGES[3]);
     });
-    return test("cursor should follow along page changes and wrap", function() {
+    test("currentItem should wrap around when pages wrap around", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
       paginator.nextPage();
       paginator.nextPage();
-      return equal(paginator.cursor, 0);
+      return equal(paginator.currentItem(), IMAGES[0]);
+    });
+    test("nextItem should return the next item on the page", function() {
+      var paginator;
+      paginator = new AntiGallery.Paginator(IMAGES, 3);
+      paginator.nextItem();
+      return equal(paginator.currentItem(), IMAGES[1]);
+    });
+    return test("previousItem should return the previous item on the page, wrapping to the last item if needed", function() {
+      var paginator;
+      paginator = new AntiGallery.Paginator(IMAGES, 3);
+      paginator.previousItem();
+      return equal(paginator.currentItem(), IMAGES[4]);
     });
   });
 }).call(this);
