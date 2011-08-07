@@ -39,10 +39,10 @@
     };
     ExampleRenderer.prototype.renderThumbs = function(thumbs) {
       /*
-          Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object
+          Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index
           */      this.select('#thumbs').empty();
-      return $(thumbs).each(__bind(function(index, object) {
-        return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + object.thumb + "\" data-thumb-index=\"" + object.id + "\"/>");
+      return $(thumbs).each(__bind(function(index, url) {
+        return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + url + "\" data-thumb-index=\"" + index + "\"/>");
       }, this));
     };
     ExampleRenderer.prototype.renderNavForPages = function(length) {

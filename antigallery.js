@@ -5,11 +5,8 @@
       this.renderer = renderer;
       this.imageCache = {};
       this.paginator = new AntiGallery.Paginator(images, this.renderer.paginateThreshold);
+      this.preloadImages(this.stripThumbs(this.paginator.currentPage()));
     }
-    AntiGallery.prototype.tagImage = function(image, i) {
-      image.id = i;
-      return image;
-    };
     AntiGallery.prototype.cacheImage = function(image) {
       return this.imageCache[image.src] = image;
     };
@@ -68,7 +65,9 @@
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbIndexName());
-        return this.setImageAndIndex(index);
+        this.paginator.gotoItem(index);
+        this.renderer.setActiveThumb(this.paginator.relativeIndex);
+        return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
       }, this));
     };
     AntiGallery.prototype.registerPageCounter = function(button) {
@@ -79,20 +78,6 @@
         return this.renderer.renderThumbs(this.pages[index]);
       }, this));
     };
-    AntiGallery.prototype.setImageAndIndex = function(index) {
-      this.currentIndex = index;
-      this.renderer.setActiveThumb(index);
-      return this.renderer.renderMainImage(this.imageForIndex(index));
-    };
-    AntiGallery.prototype.imageForIndex = function(index) {
-      return this.stripFull(this.images[this.mod(index, this.images.length)]);
-    };
-    AntiGallery.prototype.thumbForIndex = function(index) {
-      return this.stripThumb(this.images[this.mod(index, this.images.length)]);
-    };
-    AntiGallery.prototype.idForIndex = function(index) {
-      return this.stripId(this.images[this.mod(index, this.images.length)]);
-    };
     AntiGallery.prototype.nextPage = function() {
       this.paginator.nextPage();
       this.renderThumbPage();
@@ -102,8 +87,8 @@
     AntiGallery.prototype.previousPage = function() {
       this.paginator.previousPage();
       this.renderThumbPage();
-      this.renderer.renderMainImage(this.imageForIndex(this.currentIndex));
-      return this.renderer.setActiveThumb(this.idForIndex(this.currentIndex));
+      this.renderer.setActiveThumb(this.paginator.relativeIndex);
+      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.renderThumbPage = function() {
       this.preloadNearbyThumbSets();
@@ -162,6 +147,9 @@
     };
     Paginator.prototype.page = function(index) {
       return this._pages[index];
+    };
+    Paginator.prototype.gotoItem = function(index) {
+      return this.relativeIndex = index;
     };
     Paginator.prototype.totalPages = function() {
       return this._pages.length;

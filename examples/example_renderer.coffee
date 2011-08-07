@@ -42,11 +42,11 @@ class self.ExampleRenderer
 
   renderThumbs: (thumbs) ->
     ###
-    Takes an array of thumb urls (paged by paginatedThreshold), expects them to be drawn to the dom with a data attribute containing the id of the object
+    Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index
     ###
     @select('#thumbs').empty()
-    $(thumbs).each (index, object) =>
-      @select('#thumbs').append("<img class=\"thumb\" src=\"#{object.thumb}\" data-thumb-index=\"#{object.id}\"/>")
+    $(thumbs).each (index, url) =>
+      @select('#thumbs').append("<img class=\"thumb\" src=\"#{url}\" data-thumb-index=\"#{index}\"/>")
 
   renderNavForPages: (length) ->
     ###

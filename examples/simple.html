@@ -10,17 +10,17 @@
   <script type="text/javascript" src="../antigallery.js"></script>
   <script type="text/javascript">
 
-    basic_renderer = new ExampleRenderer("gallery_container");
-    other_renderer = new ExampleRenderer("other_container");
+    basic_renderer = 
+    other_renderer = 
 
-    window.gallery = new AntiGallery([
+    gallery = new AntiGallery([
       { full: 'images/one.png',   thumb: 'images/one_thumb.jpeg' }, 
       { full: 'images/two.png',   thumb: 'images/two_thumb.jpeg' }, 
       { full: 'images/three.png', thumb: 'images/three_thumb.jpeg' }, 
       { full: 'images/four.png',  thumb: 'images/four_thumb.jpeg' }, 
       { full: 'images/five.png',  thumb: 'images/five_thumb.jpeg' }, 
       { full: 'images/six.png',   thumb: 'images/six_thumb.jpeg' }
-    ]);
+    ], new ExampleRenderer("gallery_container"));
 
     other = new AntiGallery([
       { full: 'images/one.png',   thumb: 'images/one_thumb.jpeg' }, 
@@ -35,11 +35,11 @@
       { full: 'images/five.png',  thumb: 'images/five_thumb.jpeg' }, 
       { full: 'images/six.png',   thumb: 'images/six_thumb.jpeg' },
       { full: 'images/six.png',   thumb: 'images/six_thumb.jpeg' }
-    ]);
+    ], new ExampleRenderer("other_container"));
 
     $(document).ready(function(){
-      window.gallery.renderWith(basic_renderer);
-      //other.renderWith(other_renderer);
+      gallery.render();
+      other.render();
     });
 
   </script>

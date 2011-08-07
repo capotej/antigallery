@@ -2,11 +2,7 @@ class self.AntiGallery
   constructor: (images, @renderer) ->
     @imageCache = {}
     @paginator = new AntiGallery.Paginator(images, @renderer.paginateThreshold)
-    #@preloadImages(@stripThumbs(@images[0...5]))
-
-  tagImage: (image, i) ->
-    image.id = i
-    image
+    @preloadImages(@stripThumbs(@paginator.currentPage()))
 
   cacheImage: (image) ->
     @imageCache[image.src] = image
@@ -58,27 +54,15 @@ class self.AntiGallery
     button.live 'click', (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbIndexName())
-      @setImageAndIndex(index)
+      @paginator.gotoItem(index)
+      @renderer.setActiveThumb @paginator.relativeIndex
+      @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   registerPageCounter: (button) ->
     button.click (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbSetIndexName())
       @renderer.renderThumbs @pages[index]
-
-  setImageAndIndex: (index) ->
-    @currentIndex = index
-    @renderer.setActiveThumb index
-    @renderer.renderMainImage @imageForIndex(index)
-
-  imageForIndex: (index) ->
-    @stripFull @images[@mod(index, @images.length)]
-
-  thumbForIndex: (index) ->
-    @stripThumb @images[@mod(index, @images.length)]
-
-  idForIndex: (index) ->
-    @stripId @images[@mod(index, @images.length)]
 
   nextPage: ->
     @paginator.nextPage()
@@ -89,8 +73,8 @@ class self.AntiGallery
   previousPage: ->
     @paginator.previousPage()
     @renderThumbPage()
-    @renderer.renderMainImage @imageForIndex @currentIndex
-    @renderer.setActiveThumb @idForIndex @currentIndex
+    @renderer.setActiveThumb @paginator.relativeIndex
+    @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   renderThumbPage: ->
     @preloadNearbyThumbSets()
@@ -144,6 +128,9 @@ class AntiGallery.Paginator
   page: (index) ->
     @_pages[index]
 
+  gotoItem: (index) ->
+    @relativeIndex = index
+
   totalPages: ->
     @_pages.length
 
@@ -168,7 +155,6 @@ class AntiGallery.Paginator
       @pageIndex = @_pages.length - 1
     else
       @pageIndex = result
-
 
   currentPage: ->
     ###
