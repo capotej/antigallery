@@ -30,11 +30,17 @@
     AntiGallery.prototype.stripThumb = function(image) {
       return image.thumb;
     };
-    AntiGallery.prototype.stripId = function(image) {
-      return image.id;
-    };
     AntiGallery.prototype.stripFull = function(image) {
       return image.full;
+    };
+    AntiGallery.prototype.stripThumbs = function(set) {
+      var image, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = set.length; _i < _len; _i++) {
+        image = set[_i];
+        _results.push(this.stripThumb(image));
+      }
+      return _results;
     };
     AntiGallery.prototype.registerNext = function(button) {
       return button.click(__bind(function(evt) {
@@ -66,56 +72,46 @@
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbIndexName());
         this.paginator.gotoItem(index);
-        this.renderer.setActiveThumb(this.paginator.relativeIndex);
-        return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+        return this.renderMainImage();
       }, this));
     };
-    AntiGallery.prototype.registerPageCounter = function(button) {
+    AntiGallery.prototype.registerPageLink = function(button) {
       return button.click(__bind(function(evt) {
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbSetIndexName());
         this.paginator.gotoPage(index);
-        this.renderThumbPage();
-        this.renderer.setActiveThumb(this.paginator.relativeIndex);
-        return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+        return this.renderThumbsAndMain();
       }, this));
     };
     AntiGallery.prototype.nextPage = function() {
       this.paginator.nextPage();
-      this.renderThumbPage();
-      this.renderer.setActiveThumb(this.paginator.relativeIndex);
-      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.previousPage = function() {
       this.paginator.previousPage();
-      this.renderThumbPage();
-      this.renderer.setActiveThumb(this.paginator.relativeIndex);
-      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.renderThumbPage = function() {
       this.preloadNearbyThumbSets();
       this.preloadNearbyImages();
       return this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
     };
-    AntiGallery.prototype.nextImage = function() {
-      this.paginator.nextItem();
+    AntiGallery.prototype.renderMainImage = function() {
       this.renderer.setActiveThumb(this.paginator.relativeIndex);
       return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+    };
+    AntiGallery.prototype.renderThumbsAndMain = function() {
+      this.renderThumbPage();
+      return this.renderMainImage();
+    };
+    AntiGallery.prototype.nextImage = function() {
+      this.paginator.nextItem();
+      return this.renderMainImage();
     };
     AntiGallery.prototype.previousImage = function() {
       this.paginator.previousItem();
-      this.renderer.setActiveThumb(this.paginator.relativeIndex);
-      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
-    };
-    AntiGallery.prototype.stripThumbs = function(set) {
-      var image, _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = set.length; _i < _len; _i++) {
-        image = set[_i];
-        _results.push(this.stripThumb(image));
-      }
-      return _results;
+      return this.renderMainImage();
     };
     AntiGallery.prototype.render = function() {
       this.rendererCallbacks();
@@ -123,15 +119,14 @@
     };
     AntiGallery.prototype.rendererCallbacks = function() {
       this.renderer.renderNavForPages(this.paginator.pages().length);
-      this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
-      return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.registerEvents = function() {
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
       this.registerThumbPrevious(this.renderer.previousPageButton());
       this.registerThumbNext(this.renderer.nextPageButton());
-      this.registerPageCounter(this.renderer.pageElement());
+      this.registerPageLink(this.renderer.pageElement());
       return this.registerThumbClick(this.renderer.thumbElement());
     };
     return AntiGallery;

@@ -24,11 +24,11 @@ class self.AntiGallery
   stripThumb: (image) ->
     image.thumb
 
-  stripId: (image) ->
-    image.id
-
   stripFull: (image) ->
     image.full
+
+  stripThumbs: (set) ->
+    @stripThumb image for image in set
 
   registerNext: (button) ->
     button.click (evt) =>
@@ -55,47 +55,43 @@ class self.AntiGallery
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbIndexName())
       @paginator.gotoItem(index)
-      @renderer.setActiveThumb @paginator.relativeIndex
-      @renderer.renderMainImage @stripFull @paginator.currentItem()
+      @renderMainImage()
 
-  registerPageCounter: (button) ->
+  registerPageLink: (button) ->
     button.click (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbSetIndexName())
       @paginator.gotoPage(index)
-      @renderThumbPage()
-      @renderer.setActiveThumb @paginator.relativeIndex
-      @renderer.renderMainImage @stripFull @paginator.currentItem()
+      @renderThumbsAndMain()
 
   nextPage: ->
     @paginator.nextPage()
-    @renderThumbPage()
-    @renderer.setActiveThumb @paginator.relativeIndex
-    @renderer.renderMainImage @stripFull @paginator.currentItem()
+    @renderThumbsAndMain()
 
   previousPage: ->
     @paginator.previousPage()
-    @renderThumbPage()
-    @renderer.setActiveThumb @paginator.relativeIndex
-    @renderer.renderMainImage @stripFull @paginator.currentItem()
+    @renderThumbsAndMain()
 
   renderThumbPage: ->
     @preloadNearbyThumbSets()
     @preloadNearbyImages()
     @renderer.renderThumbs @stripThumbs @paginator.currentPage()
 
-  nextImage: ->
-    @paginator.nextItem()
+  renderMainImage: ->
     @renderer.setActiveThumb @paginator.relativeIndex
     @renderer.renderMainImage @stripFull @paginator.currentItem()
+
+  renderThumbsAndMain: ->
+    @renderThumbPage()
+    @renderMainImage()
+
+  nextImage: ->
+    @paginator.nextItem()
+    @renderMainImage()
 
   previousImage: ->
     @paginator.previousItem()
-    @renderer.setActiveThumb @paginator.relativeIndex
-    @renderer.renderMainImage @stripFull @paginator.currentItem()
-
-  stripThumbs: (set) ->
-    @stripThumb image for image in set
+    @renderMainImage()
 
   render: ->
     @rendererCallbacks()
@@ -103,15 +99,14 @@ class self.AntiGallery
 
   rendererCallbacks: ->
     @renderer.renderNavForPages(@paginator.pages().length)
-    @renderer.renderThumbs @stripThumbs @paginator.currentPage()
-    @renderer.renderMainImage @stripFull @paginator.currentItem()
+    @renderThumbsAndMain()
 
   registerEvents: ->
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
     @registerThumbPrevious @renderer.previousPageButton()
     @registerThumbNext @renderer.nextPageButton()
-    @registerPageCounter @renderer.pageElement()
+    @registerPageLink @renderer.pageElement()
     @registerThumbClick @renderer.thumbElement()
 
 

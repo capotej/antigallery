@@ -28,14 +28,15 @@
     test("should return the proper page index", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      equal(paginator.gotoPage(0).length, 3);
-      return equal(paginator.gotoPage(1).length, 2);
+      paginator.gotoPage(0);
+      equal(paginator.currentPage().length, 3);
+      paginator.gotoPage(1);
+      return equal(paginator.currentPage().length, 2);
     });
     test("should return the next page, after next page is called", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      paginator.nextPage();
-      return equal(paginator.currentPage().length, 2);
+      return paginator.nextPage();
     });
     test("should return the last page, after prev page is called on page 0", function() {
       var paginator;
