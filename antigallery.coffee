@@ -195,7 +195,7 @@ class AntiGallery.Paginator
       if index % perPage == 0
         arr.push sub_arr
         sub_arr = []
-    arr.push sub_arr unless sub_arr == []
+    arr.push sub_arr unless sub_arr.length == 0
     arr
 
 

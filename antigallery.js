@@ -223,7 +223,7 @@
           return sub_arr = [];
         }
       });
-      if (sub_arr !== []) {
+      if (sub_arr.length !== 0) {
         arr.push(sub_arr);
       }
       return arr;
