@@ -34,8 +34,11 @@ $(document).ready(function(){
 
 ```
 
+## Examples
 Check out the examples/ folder for an example_renderer that responds to all callbacks.
 
+## Docs
+There are coffeedocs in the docs/ folder
 
 
 ## License
