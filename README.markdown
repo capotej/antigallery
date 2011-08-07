@@ -1,6 +1,9 @@
 # Anti Gallery
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
+## Version
+1.0.0
+
 ## Manifesto
 During my career as a web developer I've used dozens of jquery galleries, each one failing in its own special way. I've even had to combine multiple half-assed galleries to deliver the necessary feature set.
 
