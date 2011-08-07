@@ -5,12 +5,12 @@
       this.renderer = renderer;
       this.imageCache = {};
       this.paginator = new AntiGallery.Paginator(images, this.renderer.paginateThreshold);
-      this.preloadImages(this.stripThumbs(this.paginator.currentPage()));
+      this.preloadAllThumbsAndImages(images);
     }
     AntiGallery.prototype.cacheImage = function(image) {
       return this.imageCache[image.src] = image;
     };
-    AntiGallery.prototype.preloadImages = function(images) {
+    AntiGallery.prototype.preloadAllThumbsAndImages = function(images) {
       var image, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = images.length; _i < _len; _i++) {
@@ -20,13 +20,14 @@
       return _results;
     };
     AntiGallery.prototype.preloadImage = function(image) {
-      var img;
-      img = document.createElement('img');
-      img.src = image;
-      return this.cacheImage(img);
+      var full, thumb;
+      full = document.createElement('img');
+      thumb = document.createElement('img');
+      full.src = image.full;
+      thumb.src = image.thumb;
+      this.cacheImage(full);
+      return this.cacheImage(thumb);
     };
-    AntiGallery.prototype.preloadNearbyThumbSets = function() {};
-    AntiGallery.prototype.preloadNearbyImages = function() {};
     AntiGallery.prototype.stripThumb = function(image) {
       return image.thumb;
     };
@@ -93,8 +94,6 @@
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.renderThumbPage = function() {
-      this.preloadNearbyThumbSets();
-      this.preloadNearbyImages();
       return this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
     };
     AntiGallery.prototype.renderMainImage = function() {

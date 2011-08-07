@@ -2,24 +2,21 @@ class self.AntiGallery
   constructor: (images, @renderer) ->
     @imageCache = {}
     @paginator = new AntiGallery.Paginator(images, @renderer.paginateThreshold)
-    @preloadImages(@stripThumbs(@paginator.currentPage()))
+    @preloadAllThumbsAndImages(images)
 
   cacheImage: (image) ->
     @imageCache[image.src] = image
 
-  preloadImages: (images) ->
+  preloadAllThumbsAndImages: (images) ->
     @preloadImage image for image in images
 
   preloadImage: (image) ->
-    img = document.createElement('img');
-    img.src = image
-    @cacheImage img
-
-  preloadNearbyThumbSets: ->
-    #stubbed
-
-  preloadNearbyImages: ->
-    #stubbed
+    full = document.createElement('img');
+    thumb = document.createElement('img');
+    full.src = image.full
+    thumb.src = image.thumb
+    @cacheImage full
+    @cacheImage thumb
 
   stripThumb: (image) ->
     image.thumb
@@ -73,8 +70,6 @@ class self.AntiGallery
     @renderThumbsAndMain()
 
   renderThumbPage: ->
-    @preloadNearbyThumbSets()
-    @preloadNearbyImages()
     @renderer.renderThumbs @stripThumbs @paginator.currentPage()
 
   renderMainImage: ->
