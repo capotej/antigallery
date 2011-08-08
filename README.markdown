@@ -2,11 +2,9 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
-1.0.2 Bugfix in Paginator
-
-1.0.1 Preloading working
-
-1.0.0 Initial Release
+* 1.0.2 Bugfix in Paginator
+* 1.0.1 Preloading working
+* 1.0.0 Initial Release
 
 ## Manifesto
 During my career as a web developer I've used dozens of jquery galleries, each one failing in its own special way. I've even had to combine multiple half-assed galleries to deliver the necessary feature set.
@@ -26,27 +24,26 @@ During my career as a web developer I've used dozens of jquery galleries, each o
 Since Anti Gallery only contains the business end of a gallery, it needs to drive something in order to be useful. So you create a renderer. A renderer is just an object that responds to certain methods which Anti Gallery calls at different times. Since it's 100% callback based, this lets you **completely** control how the gallery works.
 
 ### How you use it
-
-```
-my_renderer = new MyRenderer()
-gallery = new AntiGallery([
-                            { full: 'path/to/full.jpg', thumb: 'path/to/thumb.jpg' }
-                              ...
-                            }
-                          ], my_renderer);
-
-$(document).ready(function(){
-  gallery.render()
-});
-
+```javascript
+    // Instantiate the gallery with a renderer
+    gallery = new AntiGallery([
+        {thumb: '/path/to/thumb.jpg, full: '/path/to/full.jpg'}
+    ], new ExampleRenderer());
+  
+    // Render on document.ready
+    $(document).ready(function(){
+      gallery.render();
+    });
 ```
 
 ## Examples
 Check out the examples/ folder for an example_renderer that responds to all callbacks.
 
-## Docs
-There are coffeedocs in the docs/ folder
+## Test Suite
+The test suite is located in test/index.html
 
+## Docs
+There are coffeedocs in the docs/ folder, look in ExampleRenderer for callback documentation.
 
 ## License
 Anti Gallery is released under the MIT license.
