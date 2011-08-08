@@ -62,12 +62,20 @@ class self.ExampleRenderer
     @select("#thumbs img").css('border', '0px solid black')
     @select("#thumbs img[data-thumb-index=\"#{index}\"]").css('border', '1px solid black')
 
+  setActivePage: (index) ->
+    ###
+    Takes the index of the currently displayed page, used for styling the active page
+    ###
+    @select("#page_nav li").css('color', 'black')
+    @select("#page_nav li[data-thumbset-index=\"#{index}\"]").css('color', 'red')
+
+
   renderMainImage: (image) ->
     ###
     Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
     ###
-    @select('#main_image img').fadeOut().empty()
-    @select('#main_image').append("<img src=\"#{image}\"/>").hide().fadeIn()
+    @select('#main_image').empty()
+    @select('#main_image').append("<img src=\"#{image}\"/>")
 
   nextButton: ->
     ###

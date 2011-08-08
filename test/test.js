@@ -70,13 +70,14 @@
       return equal(paginator.currentItem(), IMAGES[4]);
     });
     module("AntiGallery");
-    test("renders the first image and first thumbset on render()", function() {
+    test("renders the first image/thumbset, sets the first thumb/page as active render()", function() {
       var gallery, mock, renderer;
       renderer = new ExampleRenderer("div");
       renderer.paginateThreshold = 3;
       mock = sinon.mock(renderer);
       mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb]);
       mock.expects("renderMainImage").once().withArgs(IMAGES[0].full);
+      mock.expects("setActivePage").once().withArgs(0);
       gallery = new AntiGallery(IMAGES, renderer);
       gallery.render();
       return mock.verify();
@@ -92,7 +93,7 @@
       gallery.nextImage();
       return mock.verify();
     });
-    test("renders the previous image on prevImage and sets the activeThumb to the relativeIndex of that page, wrapping if neccesary", function() {
+    test("renders the previous image on prevImage and sets the active thumb to the relativeIndex of that page, wrapping if neccesary", function() {
       var gallery, mock, renderer;
       renderer = new ExampleRenderer("div");
       renderer.paginateThreshold = 3;
@@ -103,7 +104,7 @@
       gallery.previousImage();
       return mock.verify();
     });
-    test("renders the first image of the next page, sets the active thumb, and draws those thumbs on nextPage", function() {
+    test("renders the first image of the next page, sets the active thumb/page, and draws those thumbs on nextPage", function() {
       var gallery, mock, renderer;
       renderer = new ExampleRenderer("div");
       renderer.paginateThreshold = 3;
@@ -111,11 +112,12 @@
       mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb]);
       mock.expects("renderMainImage").once().withArgs(IMAGES[3].full);
       mock.expects("setActiveThumb").once().withArgs(0);
+      mock.expects("setActivePage").once().withArgs(1);
       gallery = new AntiGallery(IMAGES, renderer);
       gallery.nextPage();
       return mock.verify();
     });
-    test("renders the first image of the previous page, sets the active thumb, and draws those thumbs on prevPage", function() {
+    test("renders the first image of the previous page, sets the active thumb/page, and draws those thumbs on prevPage", function() {
       var gallery, mock, renderer;
       renderer = new ExampleRenderer("div");
       renderer.paginateThreshold = 3;
@@ -123,6 +125,7 @@
       mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb]);
       mock.expects("renderMainImage").once().withArgs(IMAGES[3].full);
       mock.expects("setActiveThumb").once().withArgs(0);
+      mock.expects("setActivePage").once().withArgs(1);
       gallery = new AntiGallery(IMAGES, renderer);
       gallery.previousPage();
       return mock.verify();

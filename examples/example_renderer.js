@@ -62,11 +62,17 @@
           */      this.select("#thumbs img").css('border', '0px solid black');
       return this.select("#thumbs img[data-thumb-index=\"" + index + "\"]").css('border', '1px solid black');
     };
+    ExampleRenderer.prototype.setActivePage = function(index) {
+      /*
+          Takes the index of the currently displayed page, used for styling the active page
+          */      this.select("#page_nav li").css('color', 'black');
+      return this.select("#page_nav li[data-thumbset-index=\"" + index + "\"]").css('color', 'red');
+    };
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
-          */      this.select('#main_image img').fadeOut().empty();
-      return this.select('#main_image').append("<img src=\"" + image + "\"/>").hide().fadeIn();
+          */      this.select('#main_image').empty();
+      return this.select('#main_image').append("<img src=\"" + image + "\"/>");
     };
     ExampleRenderer.prototype.nextButton = function() {
       /*

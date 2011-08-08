@@ -94,6 +94,7 @@
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.renderThumbPage = function() {
+      this.renderer.setActivePage(this.paginator.pageIndex);
       return this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()));
     };
     AntiGallery.prototype.renderMainImage = function() {

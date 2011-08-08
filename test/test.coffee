@@ -56,12 +56,13 @@ $ ->
 
   module "AntiGallery"
 
-  test "renders the first image and first thumbset on render()", ->
+  test "renders the first image/thumbset, sets the first thumb/page as active render()", ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
     mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb])
     mock.expects("renderMainImage").once().withArgs(IMAGES[0].full)
+    mock.expects("setActivePage").once().withArgs(0)
     gallery = new AntiGallery(IMAGES, renderer)
     gallery.render()
     mock.verify()
@@ -76,7 +77,7 @@ $ ->
     gallery.nextImage()
     mock.verify()
 
-  test "renders the previous image on prevImage and sets the activeThumb to the relativeIndex of that page, wrapping if neccesary", ->
+  test "renders the previous image on prevImage and sets the active thumb to the relativeIndex of that page, wrapping if neccesary", ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
@@ -86,24 +87,26 @@ $ ->
     gallery.previousImage()
     mock.verify()
 
-  test "renders the first image of the next page, sets the active thumb, and draws those thumbs on nextPage", ->
+  test "renders the first image of the next page, sets the active thumb/page, and draws those thumbs on nextPage", ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
     mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb])
     mock.expects("renderMainImage").once().withArgs(IMAGES[3].full)
     mock.expects("setActiveThumb").once().withArgs(0)
+    mock.expects("setActivePage").once().withArgs(1)
     gallery = new AntiGallery(IMAGES, renderer)
     gallery.nextPage()
     mock.verify()
 
-  test "renders the first image of the previous page, sets the active thumb, and draws those thumbs on prevPage", ->
+  test "renders the first image of the previous page, sets the active thumb/page, and draws those thumbs on prevPage", ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
     mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb])
     mock.expects("renderMainImage").once().withArgs(IMAGES[3].full)
     mock.expects("setActiveThumb").once().withArgs(0)
+    mock.expects("setActivePage").once().withArgs(1)
     gallery = new AntiGallery(IMAGES, renderer)
     gallery.previousPage()
     mock.verify()

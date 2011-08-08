@@ -70,6 +70,7 @@ class self.AntiGallery
     @renderThumbsAndMain()
 
   renderThumbPage: ->
+    @renderer.setActivePage @paginator.pageIndex
     @renderer.renderThumbs @stripThumbs @paginator.currentPage()
 
   renderMainImage: ->
