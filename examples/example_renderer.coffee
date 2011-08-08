@@ -10,6 +10,7 @@ class self.ExampleRenderer
     ###
     (Optional) You can get creative here with your own constructor, but ours will just take a div id.
     ###
+    @direction = "right"
 
   paginateThreshold: 5
     ###
@@ -65,7 +66,8 @@ class self.ExampleRenderer
     ###
     Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
     ###
-    @select('#main_image').empty().append("<img src=\"#{image}\"/>")
+    @select('#main_image img').fadeOut().empty()
+    @select('#main_image').append("<img src=\"#{image}\"/>").hide().fadeIn()
 
   nextButton: ->
     ###

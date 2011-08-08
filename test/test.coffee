@@ -108,3 +108,11 @@ $ ->
     gallery.previousPage()
     mock.verify()
 
+  test "if the gallery is less than the paginateThreshold, hide next/prev links", ->
+    renderer = new ExampleRenderer("div")
+    renderer.paginateThreshold = 3
+    gallery = new AntiGallery([IMAGES[0], IMAGES[1]], renderer)
+    mock = sinon.mock(gallery)
+    mock.expects("hidePageNavigation").once()
+    gallery.render()
+    mock.verify()

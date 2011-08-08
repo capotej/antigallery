@@ -113,8 +113,15 @@
       return this.renderMainImage();
     };
     AntiGallery.prototype.render = function() {
+      if (!this.paginator.shouldPaginate()) {
+        this.hidePageNavigation();
+      }
       this.rendererCallbacks();
       return this.registerEvents();
+    };
+    AntiGallery.prototype.hidePageNavigation = function() {
+      this.renderer.nextPageButton().hide();
+      return this.renderer.previousPageButton().hide();
     };
     AntiGallery.prototype.rendererCallbacks = function() {
       this.renderer.renderNavForPages(this.paginator.pages().length);
@@ -139,6 +146,9 @@
       this.relativeIndex = 0;
       this._pages = dividePages(this.collection, perPage);
     }
+    Paginator.prototype.shouldPaginate = function() {
+      return this._pages.length >= 2;
+    };
     Paginator.prototype.pages = function() {
       return this._pages;
     };

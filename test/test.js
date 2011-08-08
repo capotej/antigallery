@@ -115,7 +115,7 @@
       gallery.nextPage();
       return mock.verify();
     });
-    return test("renders the first image of the previous page, sets the active thumb, and draws those thumbs on prevPage", function() {
+    test("renders the first image of the previous page, sets the active thumb, and draws those thumbs on prevPage", function() {
       var gallery, mock, renderer;
       renderer = new ExampleRenderer("div");
       renderer.paginateThreshold = 3;
@@ -125,6 +125,16 @@
       mock.expects("setActiveThumb").once().withArgs(0);
       gallery = new AntiGallery(IMAGES, renderer);
       gallery.previousPage();
+      return mock.verify();
+    });
+    return test("if the gallery is less than the paginateThreshold, hide next/prev links", function() {
+      var gallery, mock, renderer;
+      renderer = new ExampleRenderer("div");
+      renderer.paginateThreshold = 3;
+      gallery = new AntiGallery([IMAGES[0], IMAGES[1]], renderer);
+      mock = sinon.mock(gallery);
+      mock.expects("hidePageNavigation").once();
+      gallery.render();
       return mock.verify();
     });
   });

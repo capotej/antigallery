@@ -89,8 +89,13 @@ class self.AntiGallery
     @renderMainImage()
 
   render: ->
+    @hidePageNavigation() unless @paginator.shouldPaginate()
     @rendererCallbacks()
     @registerEvents()
+
+  hidePageNavigation: ->
+    @renderer.nextPageButton().hide()
+    @renderer.previousPageButton().hide()
 
   rendererCallbacks: ->
     @renderer.renderNavForPages(@paginator.pages().length)
@@ -114,6 +119,9 @@ class AntiGallery.Paginator
     @pageIndex = 0
     @relativeIndex = 0
     @_pages = dividePages(@collection, perPage)
+
+  shouldPaginate: ->
+    @_pages.length >= 2
 
   pages: ->
     @_pages

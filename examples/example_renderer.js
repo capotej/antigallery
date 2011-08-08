@@ -12,6 +12,7 @@
       /*
           (Optional) You can get creative here with your own constructor, but ours will just take a div id.
           */
+      this.direction = "right";
     }
     ExampleRenderer.prototype.paginateThreshold = 5;
     /*
@@ -64,7 +65,8 @@
     ExampleRenderer.prototype.renderMainImage = function(image) {
       /*
           Takes a full image url, called on page load, during prev/next, and when a thumb is clicked
-          */      return this.select('#main_image').empty().append("<img src=\"" + image + "\"/>");
+          */      this.select('#main_image img').fadeOut().empty();
+      return this.select('#main_image').append("<img src=\"" + image + "\"/>").hide().fadeIn();
     };
     ExampleRenderer.prototype.nextButton = function() {
       /*
