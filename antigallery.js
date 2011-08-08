@@ -1,5 +1,7 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  /*
+  VERSION 1.0.4
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
     function AntiGallery(images, renderer) {
       this.renderer = renderer;

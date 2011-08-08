@@ -2,6 +2,8 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
+* 1.0.4 Hides page navigation based on page count
+* 1.0.3 SetActivePage renderer callback
 * 1.0.2 Bugfix in Paginator
 * 1.0.1 Preloading working
 * 1.0.0 Initial Release

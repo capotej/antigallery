@@ -1,3 +1,6 @@
+###
+VERSION 1.0.4
+###
 class self.AntiGallery
   constructor: (images, @renderer) ->
     @imageCache = {}
