@@ -29,7 +29,7 @@ Since Anti Gallery only contains the business end of a gallery, it needs to driv
 ```javascript
     // Instantiate the gallery with a renderer
     gallery = new AntiGallery([
-        {thumb: '/path/to/thumb.jpg, full: '/path/to/full.jpg'}
+        {thumb: '/path/to/thumb.jpg', full: '/path/to/full.jpg'}
     ], new ExampleRenderer());
   
     // Render on document.ready
