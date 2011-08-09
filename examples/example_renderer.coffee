@@ -10,7 +10,6 @@ class self.ExampleRenderer
     ###
     (Optional) You can get creative here with your own constructor, but ours will just take a div id.
     ###
-    @direction = "right"
 
   paginateThreshold: 5
     ###
@@ -41,9 +40,9 @@ class self.ExampleRenderer
     ###
     "thumbset-index"
 
-  renderThumbs: (thumbs) ->
+  renderThumbs: (thumbs, direction) ->
     ###
-    Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index
+    Takes an array of thumb urls (paged by paginatedThreshold), and pagination direction, expects to be drawn with an index
     ###
     @select('#thumbs').empty()
     $(thumbs).each (index, url) =>

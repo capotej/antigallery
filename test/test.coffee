@@ -60,7 +60,7 @@ $ ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
-    mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb])
+    mock.expects("renderThumbs").once().withArgs([IMAGES[0].thumb, IMAGES[1].thumb, IMAGES[2].thumb], "right")
     mock.expects("renderMainImage").once().withArgs(IMAGES[0].full)
     mock.expects("setActivePage").once().withArgs(0)
     gallery = new AntiGallery(IMAGES, renderer)
@@ -91,7 +91,7 @@ $ ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
-    mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb])
+    mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb], "right")
     mock.expects("renderMainImage").once().withArgs(IMAGES[3].full)
     mock.expects("setActiveThumb").once().withArgs(0)
     mock.expects("setActivePage").once().withArgs(1)
@@ -103,7 +103,7 @@ $ ->
     renderer = new ExampleRenderer("div")
     renderer.paginateThreshold = 3
     mock = sinon.mock(renderer)
-    mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb])
+    mock.expects("renderThumbs").once().withArgs([IMAGES[3].thumb, IMAGES[4].thumb], "left")
     mock.expects("renderMainImage").once().withArgs(IMAGES[3].full)
     mock.expects("setActiveThumb").once().withArgs(0)
     mock.expects("setActivePage").once().withArgs(1)
