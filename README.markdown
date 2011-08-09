@@ -2,6 +2,7 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
+* 1.0.6 Keyboard support for multiple galleries using mouseover/out
 * 1.0.5 Direction added to renderThumbs callback for animation support
 * 1.0.4 Hides page navigation based on page count
 * 1.0.3 SetActivePage renderer callback

@@ -1,6 +1,6 @@
 (function() {
   /*
-  VERSION 1.0.5
+  VERSION 1.0.6
   */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
     function AntiGallery(images, renderer) {
@@ -88,6 +88,31 @@
         return this.renderThumbsAndMain();
       }, this));
     };
+    AntiGallery.prototype.registerMouseOverEvents = function() {
+      this.renderer.mainImage().mouseover(__bind(function(evt) {
+        evt.preventDefault();
+        return this.setupKeyEvents();
+      }, this));
+      return this.renderer.mainImage().mouseout(__bind(function(evt) {
+        evt.preventDefault();
+        return this.removeKeyEvents();
+      }, this));
+    };
+    AntiGallery.prototype.setupKeyEvents = function() {
+      return $(document).keydown(__bind(function(evt) {
+        if (evt.which === 39) {
+          evt.preventDefault();
+          this.nextImage();
+        }
+        if (evt.which === 37) {
+          evt.preventDefault();
+          return this.previousImage();
+        }
+      }, this));
+    };
+    AntiGallery.prototype.removeKeyEvents = function() {
+      return $(document).unbind('keydown');
+    };
     AntiGallery.prototype.nextPage = function() {
       this.direction = "right";
       this.paginator.nextPage();
@@ -134,6 +159,7 @@
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.registerEvents = function() {
+      this.registerMouseOverEvents();
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
       this.registerThumbPrevious(this.renderer.previousPageButton());

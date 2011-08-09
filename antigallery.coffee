@@ -1,5 +1,5 @@
 ###
-VERSION 1.0.5
+VERSION 1.0.6
 ###
 class self.AntiGallery
   constructor: (images, @renderer) ->
@@ -65,6 +65,26 @@ class self.AntiGallery
       @paginator.gotoPage(index)
       @renderThumbsAndMain()
 
+  registerMouseOverEvents: ->
+    @renderer.mainImage().mouseover (evt) =>
+      evt.preventDefault()
+      @setupKeyEvents()
+    @renderer.mainImage().mouseout (evt) =>
+      evt.preventDefault()
+      @removeKeyEvents()
+
+  setupKeyEvents: ->
+    $(document).bind("keydown", (evt) =>
+      if evt.which == 39 #right
+        evt.preventDefault()
+        @nextImage()
+      if evt.which == 37 #left
+        evt.preventDefault()
+        @previousImage()
+
+  removeKeyEvents: ->
+    $(document).unbind('keydown')
+
   nextPage: ->
     @direction = "right"
     @paginator.nextPage()
@@ -109,6 +129,7 @@ class self.AntiGallery
     @renderThumbsAndMain()
 
   registerEvents: ->
+    @registerMouseOverEvents()
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
     @registerThumbPrevious @renderer.previousPageButton()

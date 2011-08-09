@@ -106,6 +106,12 @@ class self.ExampleRenderer
     ###
     @select('.thumb')
 
+  mainImage: ->
+    ###
+    Needs to return a scoped selector of the main image
+    ###
+    @select('#main_image')
+
   pageElement: ->
     ###
     Needs to return a scoped selector to all of the direct page link elements for the gallery

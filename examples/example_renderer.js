@@ -98,6 +98,11 @@
           Needs to return a scoped selector to all of the thumb img elements for the gallery
           */      return this.select('.thumb');
     };
+    ExampleRenderer.prototype.mainImage = function() {
+      /*
+          Needs to return a scoped selector of the main image
+          */      return this.select('#main_image');
+    };
     ExampleRenderer.prototype.pageElement = function() {
       /*
           Needs to return a scoped selector to all of the direct page link elements for the gallery
