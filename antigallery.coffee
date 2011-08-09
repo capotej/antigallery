@@ -1,9 +1,10 @@
 ###
-VERSION 1.0.4
+VERSION 1.0.5
 ###
 class self.AntiGallery
   constructor: (images, @renderer) ->
     @imageCache = {}
+    @direction = "right"
     @paginator = new AntiGallery.Paginator(images, @renderer.paginateThreshold)
     @preloadAllThumbsAndImages(images)
 
@@ -65,16 +66,18 @@ class self.AntiGallery
       @renderThumbsAndMain()
 
   nextPage: ->
+    @direction = "right"
     @paginator.nextPage()
     @renderThumbsAndMain()
 
   previousPage: ->
+    @direction = "left"
     @paginator.previousPage()
     @renderThumbsAndMain()
 
   renderThumbPage: ->
     @renderer.setActivePage @paginator.pageIndex
-    @renderer.renderThumbs @stripThumbs @paginator.currentPage()
+    @renderer.renderThumbs(@stripThumbs(@paginator.currentPage()), @direction)
 
   renderMainImage: ->
     @renderer.setActiveThumb @paginator.relativeIndex

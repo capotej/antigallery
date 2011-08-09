@@ -12,7 +12,6 @@
       /*
           (Optional) You can get creative here with your own constructor, but ours will just take a div id.
           */
-      this.direction = "right";
     }
     ExampleRenderer.prototype.paginateThreshold = 5;
     /*
@@ -38,9 +37,9 @@
           The name of the data element that holds the thumbset index
           */      return "thumbset-index";
     };
-    ExampleRenderer.prototype.renderThumbs = function(thumbs) {
+    ExampleRenderer.prototype.renderThumbs = function(thumbs, direction) {
       /*
-          Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index
+          Takes an array of thumb urls (paged by paginatedThreshold), and pagination direction, expects to be drawn with an index
           */      this.select('#thumbs').empty();
       return $(thumbs).each(__bind(function(index, url) {
         return this.select('#thumbs').append("<img class=\"thumb\" src=\"" + url + "\" data-thumb-index=\"" + index + "\"/>");
