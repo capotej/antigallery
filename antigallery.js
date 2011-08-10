@@ -1,20 +1,32 @@
 (function() {
   /*
-  VERSION 1.0.6
+  VERSION 1.0.7
+  MIT Licensed
+  Copyright Julio Capote 2011
+  Source at http://github.com/capotej/antigallery
   */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
-    function AntiGallery(images, renderer) {
+    /*
+      The base Anti Gallery class, listens to events, fires callbacks on provided renderer
+      */    function AntiGallery(images, renderer) {
       this.renderer = renderer;
+      /*
+          Takes an array of image hashes, and a renderer object. Instantiates a Paginator object, and preloads all images/thumbs.
+          */
       this.imageCache = {};
       this.direction = "right";
       this.paginator = new AntiGallery.Paginator(images, this.renderer.paginateThreshold);
       this.preloadAllThumbsAndImages(images);
     }
     AntiGallery.prototype.cacheImage = function(image) {
-      return this.imageCache[image.src] = image;
+      /*
+          Writes an image dom object to the image cache.
+          */      return this.imageCache[image.src] = image;
     };
     AntiGallery.prototype.preloadAllThumbsAndImages = function(images) {
-      var image, _i, _len, _results;
+      /*
+          Loops through all images calling preloadImage
+          */      var image, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = images.length; _i < _len; _i++) {
         image = images[_i];
@@ -23,7 +35,9 @@
       return _results;
     };
     AntiGallery.prototype.preloadImage = function(image) {
-      var full, thumb;
+      /*
+          Takes an image object from the collection, and caches the full and thumb url.
+          */      var full, thumb;
       full = document.createElement('img');
       thumb = document.createElement('img');
       full.src = image.full;
@@ -32,13 +46,19 @@
       return this.cacheImage(thumb);
     };
     AntiGallery.prototype.stripThumb = function(image) {
-      return image.thumb;
+      /*
+          Accessor method for getting the thumb of an image.
+          */      return image.thumb;
     };
     AntiGallery.prototype.stripFull = function(image) {
-      return image.full;
+      /*
+          Accessor method for getting the full version of an image.
+          */      return image.full;
     };
     AntiGallery.prototype.stripThumbs = function(set) {
-      var image, _i, _len, _results;
+      /*
+          Takes an array of hashes, returns just the thumbs.
+          */      var image, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = set.length; _i < _len; _i++) {
         image = set[_i];
@@ -47,31 +67,41 @@
       return _results;
     };
     AntiGallery.prototype.registerNext = function(button) {
-      return button.click(__bind(function(evt) {
+      /*
+          Registers the next button.
+          */      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.nextImage();
       }, this));
     };
     AntiGallery.prototype.registerPrevious = function(button) {
-      return button.click(__bind(function(evt) {
+      /*
+          Registers the previous button.
+          */      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.previousImage();
       }, this));
     };
     AntiGallery.prototype.registerThumbNext = function(button) {
-      return button.click(__bind(function(evt) {
+      /*
+          Registers the next page button.
+          */      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.nextPage();
       }, this));
     };
     AntiGallery.prototype.registerThumbPrevious = function(button) {
-      return button.click(__bind(function(evt) {
+      /*
+          Registers the previous page button.
+          */      return button.click(__bind(function(evt) {
         evt.preventDefault();
         return this.previousPage();
       }, this));
     };
     AntiGallery.prototype.registerThumbClick = function(button) {
-      return button.live('click', __bind(function(evt) {
+      /*
+          Registers the thumb click event, bound to all the thumbnails, extracts the thumb index and goes to it.
+          */      return button.live('click', __bind(function(evt) {
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbIndexName());
@@ -80,7 +110,9 @@
       }, this));
     };
     AntiGallery.prototype.registerPageLink = function(button) {
-      return button.click(__bind(function(evt) {
+      /*
+          Registers the page link event, bound to all page links, extracts the page index and goes to it.
+          */      return button.click(__bind(function(evt) {
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbSetIndexName());
@@ -89,7 +121,9 @@
       }, this));
     };
     AntiGallery.prototype.registerMouseOverEvents = function() {
-      this.renderer.mainImage().mouseover(__bind(function(evt) {
+      /*
+          Creates or removes the keyboard events for a gallery when the mouse enters/leaves the main image area.
+          */      this.renderer.mainImage().mouseover(__bind(function(evt) {
         evt.preventDefault();
         return this.setupKeyEvents();
       }, this));
@@ -99,7 +133,9 @@
       }, this));
     };
     AntiGallery.prototype.setupKeyEvents = function() {
-      return $(document).keydown(__bind(function(evt) {
+      /*
+          Binds the left and right arrow keys to nextImage and previousImage.
+          */      return $(document).bind("keydown.antigallery", __bind(function(evt) {
         if (evt.which === 39) {
           evt.preventDefault();
           this.nextImage();
@@ -111,55 +147,79 @@
       }, this));
     };
     AntiGallery.prototype.removeKeyEvents = function() {
-      return $(document).unbind('keydown');
+      /*
+          Removes all keyboard events.
+          */      return $(document).unbind('keydown.antigallery');
     };
     AntiGallery.prototype.nextPage = function() {
-      this.direction = "right";
+      /*
+          Goes to the next page, renders the thumbs and the main image, sets the direction to right.
+          */      this.direction = "right";
       this.paginator.nextPage();
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.previousPage = function() {
-      this.direction = "left";
+      /*
+          Goes to the previous page, renders the thumbs and the main image, sets the direction to left.
+          */      this.direction = "left";
       this.paginator.previousPage();
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.renderThumbPage = function() {
-      this.renderer.setActivePage(this.paginator.pageIndex);
+      /*
+          Called every time we want to render a new thumbpage, sets the active page and draws the thumbs with the direction.
+          */      this.renderer.setActivePage(this.paginator.pageIndex);
       return this.renderer.renderThumbs(this.stripThumbs(this.paginator.currentPage()), this.direction);
     };
     AntiGallery.prototype.renderMainImage = function() {
-      this.renderer.setActiveThumb(this.paginator.relativeIndex);
+      /*
+          Called every time we want to update the main image, sets the active thumb and draws the main image.
+          */      this.renderer.setActiveThumb(this.paginator.relativeIndex);
       return this.renderer.renderMainImage(this.stripFull(this.paginator.currentItem()));
     };
     AntiGallery.prototype.renderThumbsAndMain = function() {
-      this.renderThumbPage();
+      /*
+          Render the thumb pages and the main image.
+          */      this.renderThumbPage();
       return this.renderMainImage();
     };
     AntiGallery.prototype.nextImage = function() {
-      this.paginator.nextItem();
+      /*
+          Goes to the next image and renders it.
+          */      this.paginator.nextItem();
       return this.renderMainImage();
     };
     AntiGallery.prototype.previousImage = function() {
-      this.paginator.previousItem();
+      /*
+          Goes to the previous image and renders it.
+          */      this.paginator.previousItem();
       return this.renderMainImage();
     };
     AntiGallery.prototype.render = function() {
-      if (!this.paginator.shouldPaginate()) {
+      /*
+          Main entry point, hides pagination links if needed, starts all the renderer callbacks and registers events.
+          */      if (!this.paginator.shouldPaginate()) {
         this.hidePageNavigation();
       }
       this.rendererCallbacks();
       return this.registerEvents();
     };
     AntiGallery.prototype.hidePageNavigation = function() {
-      this.renderer.nextPageButton().hide();
+      /*
+          Hides the page navigation.
+          */      this.renderer.nextPageButton().hide();
       return this.renderer.previousPageButton().hide();
     };
     AntiGallery.prototype.rendererCallbacks = function() {
-      this.renderer.renderNavForPages(this.paginator.pages().length);
+      /*
+          Draws the page links and renders the thumbs/main image.
+          */      this.renderer.renderNavForPages(this.paginator.totalPages());
       return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.registerEvents = function() {
-      this.registerMouseOverEvents();
+      /*
+          Register all the events we listen for on the elements provided by the renderer.
+          */      this.registerMouseOverEvents();
       this.registerPrevious(this.renderer.previousButton());
       this.registerNext(this.renderer.nextButton());
       this.registerThumbPrevious(this.renderer.previousPageButton());
@@ -171,28 +231,36 @@
   })();
   AntiGallery.Paginator = (function() {
     /*
-      Takes a collection, and lets you page item by item, or page by page
+      Takes a collection, and lets you page item by item, or page by page, wrapping around at the ends.
       */    function Paginator(collection, perPage) {
       this.collection = collection;
+      /*
+          Takes a collection and a pagination threshold, initializes the indices to 0 and divides the collection into pages.
+          */
       this.pageIndex = 0;
       this.relativeIndex = 0;
       this._pages = dividePages(this.collection, perPage);
     }
     Paginator.prototype.shouldPaginate = function() {
-      return this._pages.length >= 2;
-    };
-    Paginator.prototype.pages = function() {
-      return this._pages;
+      /*
+          Returns true if more than 1 page.
+          */      return this.totalPages() >= 2;
     };
     Paginator.prototype.gotoPage = function(index) {
-      this.relativeIndex = 0;
+      /*
+          Goes directly to a page.
+          */      this.relativeIndex = 0;
       return this.pageIndex = index;
     };
     Paginator.prototype.gotoItem = function(index) {
-      return this.relativeIndex = index;
+      /*
+          Goes directly to an item.
+          */      return this.relativeIndex = index;
     };
     Paginator.prototype.totalPages = function() {
-      return this._pages.length;
+      /*
+          Returns the total number of pages.
+          */      return this._pages.length;
     };
     Paginator.prototype.nextPage = function() {
       /*

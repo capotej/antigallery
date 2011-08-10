@@ -26,9 +26,7 @@
     <div id="main">
       
       <div id="module_docstring">
-        <h1>Example Renderer</h1>
-
-<p>This defines a basic renderer for use with antigallery. All callbacks mandatory unless stated otherwise.</p>
+        <p>This defines a basic renderer for use with antigallery. All callbacks mandatory unless stated otherwise.</p>
       </div>
       
       
@@ -51,77 +49,82 @@
               
               <div class="method">
                 <h4>container()</h4>
-                <p>(Optional) Convinience function for returning a jquery object of the container div</p>
+                <p>(Optional) Convinience function for returning a jquery object of the container div.</p>
               </div>
               
               <div class="method">
                 <h4>select(sel)</h4>
-                <p>(Optional) Convinience function for returning a jquery selector scoped to a container</p>
+                <p>(Optional) Convinience function for returning a jquery selector scoped to a container.</p>
               </div>
               
               <div class="method">
                 <h4>thumbIndexName()</h4>
-                <p>The name of the data element that holds the thumb index (how configurable is that?!)</p>
+                <p>The name of the data element that holds the thumb index (how configurable is that?!).</p>
               </div>
               
               <div class="method">
                 <h4>thumbSetIndexName()</h4>
-                <p>The name of the data element that holds the thumbset index</p>
+                <p>The name of the data element that holds the thumbset index.</p>
               </div>
               
               <div class="method">
-                <h4>renderThumbs(thumbs)</h4>
-                <p>Takes an array of thumb urls (paged by paginatedThreshold), expects to be drawn with an index</p>
+                <h4>renderThumbs(thumbs, direction)</h4>
+                <p>Takes an array of thumb urls (paged by paginatedThreshold), and pagination direction, expects to be drawn with an index.</p>
               </div>
               
               <div class="method">
                 <h4>renderNavForPages(length)</h4>
-                <p>Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index</p>
+                <p>Takes a length, its up to you to draw the numbers and link them, uses thumbSetIndexName to find the index.</p>
               </div>
               
               <div class="method">
                 <h4>setActiveThumb(index)</h4>
-                <p>Takes the index of the currently displayed image, used for styling the active thumb</p>
+                <p>Takes the index of the currently displayed image, used for styling the active thumb.</p>
               </div>
               
               <div class="method">
                 <h4>setActivePage(index)</h4>
-                <p>Takes the index of the currently displayed page, used for styling the active page</p>
+                <p>Takes the index of the currently displayed page, used for styling the active page.</p>
               </div>
               
               <div class="method">
                 <h4>renderMainImage(image)</h4>
-                <p>Takes a full image url, called on page load, during prev/next, and when a thumb is clicked</p>
+                <p>Takes a full image url, called on page load, during prev/next, and when a thumb is clicked.</p>
               </div>
               
               <div class="method">
                 <h4>nextButton()</h4>
-                <p>Needs to return a scoped selector to that gallerys next button</p>
+                <p>Needs to return a scoped selector to that gallerys next button.</p>
               </div>
               
               <div class="method">
                 <h4>previousButton()</h4>
-                <p>Needs to return a scoped selector to that gallerys previous button</p>
+                <p>Needs to return a scoped selector to that gallerys previous button.</p>
               </div>
               
               <div class="method">
                 <h4>nextPageButton()</h4>
-                <p>Needs to return a scoped selector to that gallerys next thumbset button</p>
+                <p>Needs to return a scoped selector to that gallerys next thumbset button.</p>
               </div>
               
               <div class="method">
                 <h4>previousPageButton()</h4>
-                <p>Needs to return a scoped selector to that gallerys previous thumbset button</p>
+                <p>Needs to return a scoped selector to that gallerys previous thumbset button.</p>
               </div>
               
               <div class="method">
                 <h4>thumbElement()</h4>
-                <p>Needs to return a scoped selector to all of the thumb img elements for the gallery</p>
+                <p>Needs to return a scoped selector to all of the thumb img elements for the gallery.</p>
+              </div>
+              
+              <div class="method">
+                <h4>mainImage()</h4>
+                <p>Needs to return a scoped selector of the main image.</p>
               </div>
               
               <div class="method">
                 <h4>pageElement()</h4>
-                <p>Needs to return a scoped selector to all of the direct page link elements for the gallery</p>
+                <p>Needs to return a scoped selector to all of the direct page link elements for the gallery.</p>
               </div>
               
             </div>

@@ -1,20 +1,39 @@
 ###
-VERSION 1.0.6
+VERSION 1.0.7
+MIT Licensed
+Copyright Julio Capote 2011
+Source at http://github.com/capotej/antigallery
 ###
+
 class self.AntiGallery
+  ###
+  The base Anti Gallery class, listens to events, fires callbacks on provided renderer
+  ###
   constructor: (images, @renderer) ->
+    ###
+    Takes an array of image hashes, and a renderer object. Instantiates a Paginator object, and preloads all images/thumbs.
+    ###
     @imageCache = {}
     @direction = "right"
     @paginator = new AntiGallery.Paginator(images, @renderer.paginateThreshold)
     @preloadAllThumbsAndImages(images)
 
   cacheImage: (image) ->
+    ###
+    Writes an image dom object to the image cache.
+    ###
     @imageCache[image.src] = image
 
   preloadAllThumbsAndImages: (images) ->
+    ###
+    Loops through all images calling preloadImage
+    ###
     @preloadImage image for image in images
 
   preloadImage: (image) ->
+    ###
+    Takes an image object from the collection, and caches the full and thumb url.
+    ###
     full = document.createElement('img');
     thumb = document.createElement('img');
     full.src = image.full
@@ -23,35 +42,59 @@ class self.AntiGallery
     @cacheImage thumb
 
   stripThumb: (image) ->
+    ###
+    Accessor method for getting the thumb of an image.
+    ###
     image.thumb
 
   stripFull: (image) ->
+    ###
+    Accessor method for getting the full version of an image.
+    ###
     image.full
 
   stripThumbs: (set) ->
+    ###
+    Takes an array of hashes, returns just the thumbs.
+    ###
     @stripThumb image for image in set
 
   registerNext: (button) ->
+    ###
+    Registers the next button.
+    ###
     button.click (evt) =>
       evt.preventDefault()
       @nextImage()
 
   registerPrevious: (button) ->
+    ###
+    Registers the previous button.
+    ###
     button.click (evt) =>
       evt.preventDefault()
       @previousImage()
 
   registerThumbNext: (button) ->
+    ###
+    Registers the next page button.
+    ###
     button.click (evt) =>
       evt.preventDefault()
       @nextPage()
 
   registerThumbPrevious: (button) ->
+    ###
+    Registers the previous page button.
+    ###
     button.click (evt) =>
       evt.preventDefault()
       @previousPage()
 
   registerThumbClick: (button) ->
+    ###
+    Registers the thumb click event, bound to all the thumbnails, extracts the thumb index and goes to it.
+    ###
     button.live 'click', (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbIndexName())
@@ -59,6 +102,9 @@ class self.AntiGallery
       @renderMainImage()
 
   registerPageLink: (button) ->
+    ###
+    Registers the page link event, bound to all page links, extracts the page index and goes to it.
+    ###
     button.click (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbSetIndexName())
@@ -66,6 +112,9 @@ class self.AntiGallery
       @renderThumbsAndMain()
 
   registerMouseOverEvents: ->
+    ###
+    Creates or removes the keyboard events for a gallery when the mouse enters/leaves the main image area.
+    ###
     @renderer.mainImage().mouseover (evt) =>
       evt.preventDefault()
       @setupKeyEvents()
@@ -74,7 +123,10 @@ class self.AntiGallery
       @removeKeyEvents()
 
   setupKeyEvents: ->
-    $(document).bind("keydown", (evt) =>
+    ###
+    Binds the left and right arrow keys to nextImage and previousImage.
+    ###
+    $(document).bind "keydown.antigallery", (evt) =>
       if evt.which == 39 #right
         evt.preventDefault()
         @nextImage()
@@ -83,52 +135,88 @@ class self.AntiGallery
         @previousImage()
 
   removeKeyEvents: ->
-    $(document).unbind('keydown')
+    ###
+    Removes all keyboard events.
+    ###
+    $(document).unbind('keydown.antigallery')
 
   nextPage: ->
+    ###
+    Goes to the next page, renders the thumbs and the main image, sets the direction to right.
+    ###
     @direction = "right"
     @paginator.nextPage()
     @renderThumbsAndMain()
 
   previousPage: ->
+    ###
+    Goes to the previous page, renders the thumbs and the main image, sets the direction to left.
+    ###
     @direction = "left"
     @paginator.previousPage()
     @renderThumbsAndMain()
 
   renderThumbPage: ->
+    ###
+    Called every time we want to render a new thumbpage, sets the active page and draws the thumbs with the direction.
+    ###
     @renderer.setActivePage @paginator.pageIndex
     @renderer.renderThumbs(@stripThumbs(@paginator.currentPage()), @direction)
 
   renderMainImage: ->
+    ###
+    Called every time we want to update the main image, sets the active thumb and draws the main image.
+    ###
     @renderer.setActiveThumb @paginator.relativeIndex
     @renderer.renderMainImage @stripFull @paginator.currentItem()
 
   renderThumbsAndMain: ->
+    ###
+    Render the thumb pages and the main image.
+    ###
     @renderThumbPage()
     @renderMainImage()
 
   nextImage: ->
+    ###
+    Goes to the next image and renders it.
+    ###
     @paginator.nextItem()
     @renderMainImage()
 
   previousImage: ->
+    ###
+    Goes to the previous image and renders it.
+    ###
     @paginator.previousItem()
     @renderMainImage()
 
   render: ->
+    ###
+    Main entry point, hides pagination links if needed, starts all the renderer callbacks and registers events.
+    ###
     @hidePageNavigation() unless @paginator.shouldPaginate()
     @rendererCallbacks()
     @registerEvents()
 
   hidePageNavigation: ->
+    ###
+    Hides the page navigation.
+    ###
     @renderer.nextPageButton().hide()
     @renderer.previousPageButton().hide()
 
   rendererCallbacks: ->
-    @renderer.renderNavForPages(@paginator.pages().length)
+    ###
+    Draws the page links and renders the thumbs/main image.
+    ###
+    @renderer.renderNavForPages(@paginator.totalPages())
     @renderThumbsAndMain()
 
   registerEvents: ->
+    ###
+    Register all the events we listen for on the elements provided by the renderer.
+    ###
     @registerMouseOverEvents()
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
@@ -140,28 +228,39 @@ class self.AntiGallery
 
 class AntiGallery.Paginator
   ###
-  Takes a collection, and lets you page item by item, or page by page
+  Takes a collection, and lets you page item by item, or page by page, wrapping around at the ends.
   ###
-
   constructor: (@collection, perPage) ->
+    ###
+    Takes a collection and a pagination threshold, initializes the indices to 0 and divides the collection into pages.
+    ###
     @pageIndex = 0
     @relativeIndex = 0
     @_pages = dividePages(@collection, perPage)
 
   shouldPaginate: ->
-    @_pages.length >= 2
-
-  pages: ->
-    @_pages
+    ###
+    Returns true if more than 1 page.
+    ###
+    @totalPages() >= 2
 
   gotoPage: (index) ->
+    ###
+    Goes directly to a page.
+    ###
     @relativeIndex = 0
     @pageIndex = index
 
   gotoItem: (index) ->
+    ###
+    Goes directly to an item.
+    ###
     @relativeIndex = index
 
   totalPages: ->
+    ###
+    Returns the total number of pages.
+    ###
     @_pages.length
 
   nextPage: ->
@@ -233,6 +332,8 @@ class AntiGallery.Paginator
         sub_arr = []
     arr.push sub_arr unless sub_arr.length == 0
     arr
+
+
 
 
 

@@ -28,7 +28,10 @@
     <div id="main">
       
       <div id="module_docstring">
-        <p>VERSION 1.0.4</p>
+        <p>VERSION 1.0.7
+MIT Licensed
+Copyright Julio Capote 2011
+Source at http://github.com/capotej/antigallery</p>
       </div>
       
       
@@ -41,127 +44,142 @@
             
           </div>
           <div class="class_content">
-            
+            <p>The base Anti Gallery class, listens to events, fires callbacks on provided renderer</p>
             <div class="methods">
               
               <div class="method">
                 <h4>constructor(images, )</h4>
-                
+                <p>Takes an array of image hashes, and a renderer object. Instantiates a Paginator object, and preloads all images/thumbs.</p>
               </div>
               
               <div class="method">
                 <h4>cacheImage(image)</h4>
-                
+                <p>Writes an image dom object to the image cache.</p>
               </div>
               
               <div class="method">
                 <h4>preloadAllThumbsAndImages(images)</h4>
-                
+                <p>Loops through all images calling preloadImage</p>
               </div>
               
               <div class="method">
                 <h4>preloadImage(image)</h4>
-                
+                <p>Takes an image object from the collection, and caches the full and thumb url.</p>
               </div>
               
               <div class="method">
                 <h4>stripThumb(image)</h4>
-                
+                <p>Accessor method for getting the thumb of an image.</p>
               </div>
               
               <div class="method">
                 <h4>stripFull(image)</h4>
-                
+                <p>Accessor method for getting the full version of an image.</p>
               </div>
               
               <div class="method">
                 <h4>stripThumbs(set)</h4>
-                
+                <p>Takes an array of hashes, returns just the thumbs.</p>
               </div>
               
               <div class="method">
                 <h4>registerNext(button)</h4>
-                
+                <p>Registers the next button.</p>
               </div>
               
               <div class="method">
                 <h4>registerPrevious(button)</h4>
-                
+                <p>Registers the previous button.</p>
               </div>
               
               <div class="method">
                 <h4>registerThumbNext(button)</h4>
-                
+                <p>Registers the next page button.</p>
               </div>
               
               <div class="method">
                 <h4>registerThumbPrevious(button)</h4>
-                
+                <p>Registers the previous page button.</p>
               </div>
               
               <div class="method">
                 <h4>registerThumbClick(button)</h4>
-                
+                <p>Registers the thumb click event, bound to all the thumbnails, extracts the thumb index and goes to it.</p>
               </div>
               
               <div class="method">
                 <h4>registerPageLink(button)</h4>
-                
+                <p>Registers the page link event, bound to all page links, extracts the page index and goes to it.</p>
+              </div>
+              
+              <div class="method">
+                <h4>registerMouseOverEvents()</h4>
+                <p>Creates or removes the keyboard events for a gallery when the mouse enters/leaves the main image area.</p>
+              </div>
+              
+              <div class="method">
+                <h4>setupKeyEvents()</h4>
+                <p>Binds the left and right arrow keys to nextImage and previousImage.</p>
+              </div>
+              
+              <div class="method">
+                <h4>removeKeyEvents()</h4>
+                <p>Removes all keyboard events.</p>
               </div>
               
               <div class="method">
                 <h4>nextPage()</h4>
-                
+                <p>Goes to the next page, renders the thumbs and the main image, sets the direction to right.</p>
               </div>
               
               <div class="method">
                 <h4>previousPage()</h4>
-                
+                <p>Goes to the previous page, renders the thumbs and the main image, sets the direction to left.</p>
               </div>
               
               <div class="method">
                 <h4>renderThumbPage()</h4>
-                
+                <p>Called every time we want to render a new thumbpage, sets the active page and draws the thumbs with the direction.</p>
               </div>
               
               <div class="method">
                 <h4>renderMainImage()</h4>
-                
+                <p>Called every time we want to update the main image, sets the active thumb and draws the main image.</p>
               </div>
               
               <div class="method">
                 <h4>renderThumbsAndMain()</h4>
-                
+                <p>Render the thumb pages and the main image.</p>
               </div>
               
               <div class="method">
                 <h4>nextImage()</h4>
-                
+                <p>Goes to the next image and renders it.</p>
               </div>
               
               <div class="method">
                 <h4>previousImage()</h4>
-                
+                <p>Goes to the previous image and renders it.</p>
               </div>
               
               <div class="method">
                 <h4>render()</h4>
-                
+                <p>Main entry point, hides pagination links if needed, starts all the renderer callbacks and registers events.</p>
               </div>
               
               <div class="method">
                 <h4>hidePageNavigation()</h4>
-                
+                <p>Hides the page navigation.</p>
               </div>
               
               <div class="method">
                 <h4>rendererCallbacks()</h4>
-                
+                <p>Draws the page links and renders the thumbs/main image.</p>
               </div>
               
               <div class="method">
                 <h4>registerEvents()</h4>
-                
+                <p>Register all the events we listen for on the elements provided by the renderer.</p>
               </div>
               
             </div>
@@ -174,37 +192,32 @@
             
           </div>
           <div class="class_content">
-            <p>Takes a collection, and lets you page item by item, or page by page</p>
+            <p>Takes a collection, and lets you page item by item, or page by page, wrapping around at the ends.</p>
             <div class="methods">
               
               <div class="method">
                 <h4>constructor(, perPage)</h4>
-                
+                <p>Takes a collection and a pagination threshold, initializes the indices to 0 and divides the collection into pages.</p>
               </div>
               
               <div class="method">
                 <h4>shouldPaginate()</h4>
-                
-              </div>
-              
-              <div class="method">
-                <h4>pages()</h4>
-                
+                <p>Returns true if more than 1 page.</p>
               </div>
               
               <div class="method">
                 <h4>gotoPage(index)</h4>
-                
+                <p>Goes directly to a page.</p>
               </div>
               
               <div class="method">
                 <h4>gotoItem(index)</h4>
-                
+                <p>Goes directly to an item.</p>
               </div>
               
               <div class="method">
                 <h4>totalPages()</h4>
-                
+                <p>Returns the total number of pages.</p>
               </div>
               
               <div class="method">
