@@ -1,9 +1,14 @@
 (function() {
   /*
-  VERSION 1.0.7
+  VERSION 1.0.8
+  
   MIT Licensed
+  
   Copyright Julio Capote 2011
+  
   Source at http://github.com/capotej/antigallery
+  
+  Homepage at http://capotej.github.com/antigallery
   */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   self.AntiGallery = (function() {
     /*
@@ -134,8 +139,9 @@
     };
     AntiGallery.prototype.setupKeyEvents = function() {
       /*
-          Binds the left and right arrow keys to nextImage and previousImage.
-          */      return $(document).bind("keydown.antigallery", __bind(function(evt) {
+          Binds the left and right arrow keys to nextImage and previousImage, removing any key events first.
+          */      this.removeKeyEvents();
+      return $(document).bind("keydown.antigallery", __bind(function(evt) {
         if (evt.which === 39) {
           evt.preventDefault();
           this.nextImage();
@@ -197,24 +203,30 @@
     };
     AntiGallery.prototype.render = function() {
       /*
-          Main entry point, hides pagination links if needed, starts all the renderer callbacks and registers events.
-          */      if (!this.paginator.shouldPaginate()) {
+          Main entry point, hides pagination if neededed, registers events, then renders the thumbs/main.
+          */      this.claimFirstSpot();
+      if (!this.paginator.shouldPaginate()) {
         this.hidePageNavigation();
       }
-      this.rendererCallbacks();
-      return this.registerEvents();
+      if (this.paginator.shouldPaginate()) {
+        this.renderer.renderNavForPages(this.paginator.totalPages());
+      }
+      this.registerEvents();
+      return this.renderThumbsAndMain();
+    };
+    AntiGallery.prototype.claimFirstSpot = function() {
+      /*
+          If the data attribute isnt there, then setup the key events for that gallery, if it is, skip, cause another already did.
+          */      if ($('body').data('first_antigallery') === void 0) {
+        this.setupKeyEvents();
+        return $('body').data('first_antigallery', 'done');
+      }
     };
     AntiGallery.prototype.hidePageNavigation = function() {
       /*
           Hides the page navigation.
           */      this.renderer.nextPageButton().hide();
       return this.renderer.previousPageButton().hide();
-    };
-    AntiGallery.prototype.rendererCallbacks = function() {
-      /*
-          Draws the page links and renders the thumbs/main image.
-          */      this.renderer.renderNavForPages(this.paginator.totalPages());
-      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.registerEvents = function() {
       /*

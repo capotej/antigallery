@@ -1,8 +1,13 @@
 ###
-VERSION 1.0.7
+VERSION 1.0.8
+
 MIT Licensed
+
 Copyright Julio Capote 2011
+
 Source at http://github.com/capotej/antigallery
+
+Homepage at http://capotej.github.com/antigallery
 ###
 
 class self.AntiGallery
@@ -124,8 +129,9 @@ class self.AntiGallery
 
   setupKeyEvents: ->
     ###
-    Binds the left and right arrow keys to nextImage and previousImage.
+    Binds the left and right arrow keys to nextImage and previousImage, removing any key events first.
     ###
+    @removeKeyEvents()
     $(document).bind "keydown.antigallery", (evt) =>
       if evt.which == 39 #right
         evt.preventDefault()
@@ -193,11 +199,21 @@ class self.AntiGallery
 
   render: ->
     ###
-    Main entry point, hides pagination links if needed, starts all the renderer callbacks and registers events.
+    Main entry point, hides pagination if neededed, registers events, then renders the thumbs/main.
     ###
+    @claimFirstSpot()
     @hidePageNavigation() unless @paginator.shouldPaginate()
-    @rendererCallbacks()
+    @renderer.renderNavForPages(@paginator.totalPages()) if @paginator.shouldPaginate()
     @registerEvents()
+    @renderThumbsAndMain()
+
+  claimFirstSpot: ->
+    ###
+    If the data attribute isnt there, then setup the key events for that gallery, if it is, skip, cause another already did.
+    ###
+    if $('body').data('first_antigallery') == undefined
+      @setupKeyEvents()
+      $('body').data('first_antigallery', 'done')
 
   hidePageNavigation: ->
     ###
@@ -205,13 +221,6 @@ class self.AntiGallery
     ###
     @renderer.nextPageButton().hide()
     @renderer.previousPageButton().hide()
-
-  rendererCallbacks: ->
-    ###
-    Draws the page links and renders the thumbs/main image.
-    ###
-    @renderer.renderNavForPages(@paginator.totalPages())
-    @renderThumbsAndMain()
 
   registerEvents: ->
     ###
