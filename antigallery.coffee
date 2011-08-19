@@ -39,8 +39,8 @@ class self.AntiGallery
     ###
     Takes an image object from the collection, and caches the full and thumb url.
     ###
-    full = document.createElement('img');
-    thumb = document.createElement('img');
+    full = document.createElement('img')
+    thumb = document.createElement('img')
     full.src = image.full
     thumb.src = image.thumb
     @cacheImage full
