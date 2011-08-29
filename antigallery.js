@@ -193,13 +193,13 @@
       /*
           Goes to the next image and renders it.
           */      this.paginator.nextItem();
-      return this.renderMainImage();
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.previousImage = function() {
       /*
           Goes to the previous image and renders it.
           */      this.paginator.previousItem();
-      return this.renderMainImage();
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.render = function() {
       /*
@@ -306,12 +306,10 @@
     Paginator.prototype.nextItem = function() {
       /*
           Forwards the cursor one item forward, turning the page if it has to
-          */      var result;
-      result = this.relativeIndex + 1;
-      if (result > this.currentPage().length - 1) {
+          */      if (this.relativeIndex === this.currentPage().length - 1) {
         return this.nextPage();
       } else {
-        return this.relativeIndex = result;
+        return this.relativeIndex += 1;
       }
     };
     Paginator.prototype.previousItem = function() {

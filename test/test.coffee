@@ -48,6 +48,14 @@ $ ->
     paginator.nextItem()
     equal(paginator.currentItem(), IMAGES[1])
 
+  test "nextItem on page border should advance the page", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    paginator.nextItem()
+    paginator.nextItem()
+    paginator.nextItem()
+    paginator.nextItem()
+    equal(paginator.currentItem(), IMAGES[3])
+
   test "previousItem should return the previous item on the page, wrapping to the last item if needed", ->
     paginator = new AntiGallery.Paginator(IMAGES, 3)
     paginator.previousItem()

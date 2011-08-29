@@ -188,14 +188,14 @@ class self.AntiGallery
     Goes to the next image and renders it.
     ###
     @paginator.nextItem()
-    @renderMainImage()
+    @renderThumbsAndMain()
 
   previousImage: ->
     ###
     Goes to the previous image and renders it.
     ###
     @paginator.previousItem()
-    @renderMainImage()
+    @renderThumbsAndMain()
 
   render: ->
     ###
@@ -304,11 +304,10 @@ class AntiGallery.Paginator
     ###
     Forwards the cursor one item forward, turning the page if it has to
     ###
-    result = @relativeIndex + 1
-    if result > @currentPage().length - 1
+    if @relativeIndex == @currentPage().length - 1
       @nextPage()
     else
-      @relativeIndex = result
+      @relativeIndex += 1
 
   previousItem: ->
     ###
