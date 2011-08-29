@@ -2,7 +2,8 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
-* 1.0.9 Fixed bug causing nextItem to not turn the page if needed
+* 1.1.0 Fixes broken 1.0.9 release
+* 1.0.9 (BROKEN) Fixed bug causing nextItem to not turn the page if needed
 * 1.0.8 Sets up keyboard events for first rendered gallery, hides direct page links if needed
 * 1.0.7 100% docs and namespaced keyboard events, avoids clashing with other events
 * 1.0.6 Keyboard support for multiple galleries using mouseover/out

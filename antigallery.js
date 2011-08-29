@@ -1,6 +1,6 @@
 (function() {
   /*
-  VERSION 1.0.9
+  VERSION 1.1.0
   
   MIT Licensed
   
@@ -71,22 +71,13 @@
       }
       return _results;
     };
-    AntiGallery.prototype.preventDefault = function(evt) {
-      /*
-          Prevents the event from doing the default action cross-browser
-          */      evt.preventDefault();
-      if (evt.returnValue) {
-        return evt.returnValue = false;
-      }
-    };
     AntiGallery.prototype.registerNext = function(button) {
       /*
           Registers the next button.
-          */      return button.click = __bind(function(evt) {
-        alert('asd');
-        this.preventDefault(evt);
+          */      return button.click(__bind(function(evt) {
+        evt.preventDefault();
         return this.nextImage();
-      }, this);
+      }, this));
     };
     AntiGallery.prototype.registerPrevious = function(button) {
       /*
