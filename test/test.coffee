@@ -53,7 +53,6 @@ $ ->
     paginator.nextItem()
     paginator.nextItem()
     paginator.nextItem()
-    paginator.nextItem()
     equal(paginator.currentItem(), IMAGES[3])
 
   test "previousItem should return the previous item on the page, wrapping to the last item if needed", ->
