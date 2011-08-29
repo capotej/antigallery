@@ -25,7 +25,7 @@ $ ->
   test "should return the next page, after next page is called", ->
     paginator = new AntiGallery.Paginator(IMAGES, 3)
     paginator.nextPage()
-
+    equal(paginator.currentPage().length, 2)
 
   test "should return the last page, after prev page is called on page 0", ->
     paginator = new AntiGallery.Paginator(IMAGES, 3)
@@ -52,6 +52,14 @@ $ ->
     paginator = new AntiGallery.Paginator(IMAGES, 3)
     paginator.previousItem()
     equal(paginator.currentItem(), IMAGES[4])
+
+  test "nextItem on page border should advance the page", ->
+    paginator = new AntiGallery.Paginator(IMAGES, 3)
+    paginator.nextItem()
+    paginator.nextItem()
+    paginator.nextItem()
+    paginator.nextItem()
+    equal(paginator.currentItem(), IMAGES[3])
 
 
   module "AntiGallery"

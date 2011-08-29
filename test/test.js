@@ -36,7 +36,8 @@
     test("should return the next page, after next page is called", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);
-      return paginator.nextPage();
+      paginator.nextPage();
+      return equal(paginator.currentPage().length, 2);
     });
     test("should return the last page, after prev page is called on page 0", function() {
       var paginator;
@@ -68,6 +69,15 @@
       paginator = new AntiGallery.Paginator(IMAGES, 3);
       paginator.previousItem();
       return equal(paginator.currentItem(), IMAGES[4]);
+    });
+    test("nextItem on page border should advance the page", function() {
+      var paginator;
+      paginator = new AntiGallery.Paginator(IMAGES, 3);
+      paginator.nextItem();
+      paginator.nextItem();
+      paginator.nextItem();
+      paginator.nextItem();
+      return equal(paginator.currentItem(), IMAGES[3]);
     });
     module("AntiGallery");
     test("renders the first image/thumbset, sets the first thumb/page as active render()", function() {

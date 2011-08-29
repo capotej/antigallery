@@ -71,13 +71,22 @@
       }
       return _results;
     };
+    AntiGallery.prototype.preventDefault = function(evt) {
+      /*
+          Prevents the event from doing the default action cross-browser
+          */      evt.preventDefault();
+      if (evt.returnValue) {
+        return evt.returnValue = false;
+      }
+    };
     AntiGallery.prototype.registerNext = function(button) {
       /*
           Registers the next button.
-          */      return button.click(__bind(function(evt) {
-        evt.preventDefault();
+          */      return button.click = __bind(function(evt) {
+        alert('asd');
+        this.preventDefault(evt);
         return this.nextImage();
-      }, this));
+      }, this);
     };
     AntiGallery.prototype.registerPrevious = function(button) {
       /*
@@ -306,12 +315,10 @@
     Paginator.prototype.nextItem = function() {
       /*
           Forwards the cursor one item forward, turning the page if it has to
-          */      var result;
-      result = this.relativeIndex + 1;
-      if (result > this.currentPage().length - 1) {
+          */      if (this.relativeIndex === this.currentPage().length) {
         return this.nextPage();
       } else {
-        return this.relativeIndex = result;
+        return this.relativeIndex += 1;
       }
     };
     Paginator.prototype.previousItem = function() {
