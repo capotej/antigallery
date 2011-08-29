@@ -64,6 +64,14 @@
       paginator.nextItem();
       return equal(paginator.currentItem(), IMAGES[1]);
     });
+    test("nextItem on page border should advance the page", function() {
+      var paginator;
+      paginator = new AntiGallery.Paginator(IMAGES, 3);
+      paginator.nextItem();
+      paginator.nextItem();
+      paginator.nextItem();
+      return equal(paginator.currentItem(), IMAGES[3]);
+    });
     test("previousItem should return the previous item on the page, wrapping to the last item if needed", function() {
       var paginator;
       paginator = new AntiGallery.Paginator(IMAGES, 3);

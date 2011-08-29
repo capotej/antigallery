@@ -64,20 +64,12 @@ class self.AntiGallery
     ###
     @stripThumb image for image in set
 
-  preventDefault: (evt) ->
-    ###
-    Prevents the event from doing the default action cross-browser
-    ###
-    evt.preventDefault()
-    evt.returnValue = false if evt.returnValue
-
   registerNext: (button) ->
     ###
     Registers the next button.
     ###
-    button.click = (evt) =>
-      alert('asd') 
-      @preventDefault(evt) 
+    button.click (evt) =>
+      evt.preventDefault()
       @nextImage()
 
   registerPrevious: (button) ->
@@ -196,14 +188,14 @@ class self.AntiGallery
     Goes to the next image and renders it.
     ###
     @paginator.nextItem()
-    @renderMainImage()
+    @renderThumbsAndMain()
 
   previousImage: ->
     ###
     Goes to the previous image and renders it.
     ###
     @paginator.previousItem()
-    @renderMainImage()
+    @renderThumbsAndMain()
 
   render: ->
     ###
@@ -312,7 +304,7 @@ class AntiGallery.Paginator
     ###
     Forwards the cursor one item forward, turning the page if it has to
     ###
-    if @relativeIndex == @currentPage().length
+    if @relativeIndex == @currentPage().length - 1
       @nextPage()
     else
       @relativeIndex += 1

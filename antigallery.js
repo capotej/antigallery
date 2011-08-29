@@ -202,13 +202,13 @@
       /*
           Goes to the next image and renders it.
           */      this.paginator.nextItem();
-      return this.renderMainImage();
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.previousImage = function() {
       /*
           Goes to the previous image and renders it.
           */      this.paginator.previousItem();
-      return this.renderMainImage();
+      return this.renderThumbsAndMain();
     };
     AntiGallery.prototype.render = function() {
       /*
@@ -315,7 +315,7 @@
     Paginator.prototype.nextItem = function() {
       /*
           Forwards the cursor one item forward, turning the page if it has to
-          */      if (this.relativeIndex === this.currentPage().length) {
+          */      if (this.relativeIndex === this.currentPage().length - 1) {
         return this.nextPage();
       } else {
         return this.relativeIndex += 1;
