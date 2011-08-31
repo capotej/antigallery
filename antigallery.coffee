@@ -1,5 +1,5 @@
 ###
-VERSION 1.1.2
+VERSION 1.1.3
 
 MIT Licensed
 
@@ -203,7 +203,7 @@ class self.AntiGallery
     Goes to the previous image and renders it.
     ###
     currentPage = @paginator.pageIndex
-    @paginator.nextItem()
+    @paginator.prevItem()
     if currentPage != @paginator.pageIndex
       @renderThumbsAndMain()
     else
