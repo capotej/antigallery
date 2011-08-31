@@ -2,6 +2,7 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
+* 1.1.2 Next and Previous buttons no longer renderThumbs every time
 * 1.1.1 Going to a page directly now sets the proper animation direction
 * 1.1.0 Fixes broken 1.0.9 release
 * 1.0.9 (BROKEN) Fixed bug causing nextItem to not turn the page if needed

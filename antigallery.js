@@ -1,6 +1,6 @@
 (function() {
   /*
-  VERSION 1.1.1
+  VERSION 1.1.2
   
   MIT Licensed
   
@@ -197,14 +197,26 @@
     AntiGallery.prototype.nextImage = function() {
       /*
           Goes to the next image and renders it.
-          */      this.paginator.nextItem();
-      return this.renderThumbsAndMain();
+          */      var currentPage;
+      currentPage = this.paginator.pageIndex;
+      this.paginator.nextItem();
+      if (currentPage !== this.paginator.pageIndex) {
+        return this.renderThumbsAndMain();
+      } else {
+        return this.renderMainImage();
+      }
     };
     AntiGallery.prototype.previousImage = function() {
       /*
           Goes to the previous image and renders it.
-          */      this.paginator.previousItem();
-      return this.renderThumbsAndMain();
+          */      var currentPage;
+      currentPage = this.paginator.pageIndex;
+      this.paginator.nextItem();
+      if (currentPage !== this.paginator.pageIndex) {
+        return this.renderThumbsAndMain();
+      } else {
+        return this.renderMainImage();
+      }
     };
     AntiGallery.prototype.render = function() {
       /*
