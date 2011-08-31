@@ -1,6 +1,6 @@
 (function() {
   /*
-  VERSION 1.1.0
+  VERSION 1.1.1
   
   MIT Licensed
   
@@ -121,6 +121,11 @@
         var index;
         evt.preventDefault();
         index = $(evt.target).data(this.renderer.thumbSetIndexName());
+        if (index > this.paginator.pageIndex) {
+          this.direction = "right";
+        } else {
+          this.direction = "left";
+        }
         this.paginator.gotoPage(index);
         return this.renderThumbsAndMain();
       }, this));

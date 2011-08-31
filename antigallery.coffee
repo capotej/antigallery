@@ -1,5 +1,5 @@
 ###
-VERSION 1.1.0
+VERSION 1.1.1
 
 MIT Licensed
 
@@ -113,6 +113,10 @@ class self.AntiGallery
     button.click (evt) =>
       evt.preventDefault()
       index = $(evt.target).data(@renderer.thumbSetIndexName())
+      if index > @paginator.pageIndex
+        @direction = "right"
+      else
+        @direction = "left"
       @paginator.gotoPage(index)
       @renderThumbsAndMain()
 
@@ -257,6 +261,7 @@ class AntiGallery.Paginator
     ###
     Goes directly to a page.
     ###
+
     @relativeIndex = 0
     @pageIndex = index
 
