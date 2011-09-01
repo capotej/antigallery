@@ -1,5 +1,5 @@
 ###
-VERSION 1.1.4
+VERSION 1.1.5
 
 MIT Licensed
 
@@ -120,35 +120,38 @@ class self.AntiGallery
       @paginator.gotoPage(index)
       @renderThumbsAndMain()
 
-  registerMouseOverEvents: ->
-    ###
-    Creates or removes the keyboard events for a gallery when the mouse enters/leaves the main image area.
-    ###
-    @renderer.mainImage().mouseover (evt) =>
-      evt.preventDefault()
-      @setupKeyEvents()
-    @renderer.mainImage().mouseout (evt) =>
-      evt.preventDefault()
-      @removeKeyEvents()
 
-  setupKeyEvents: ->
+  registerKeyEvents: ->
     ###
-    Binds the left and right arrow keys to nextImage and previousImage, removing any key events first.
+    Binds the left and right arrow keys to nextImage and previousImage,
+    we check our own scroll position to determine if we should do anything
     ###
-    @removeKeyEvents()
     $(document).bind "keydown.antigallery", (evt) =>
       if evt.which == 39 #right
         evt.preventDefault()
-        @nextImage()
+        @nextImage() if @shown()
       if evt.which == 37 #left
         evt.preventDefault()
-        @previousImage()
+        @previousImage() if @shown()
 
-  removeKeyEvents: ->
+  shown: ->
     ###
-    Removes all keyboard events.
+    Determines if we are the closest gallery to the currently scrolled position
+    Populates an array with a tuple of [offset, gallery], sort by offset, then return true if 
+    we are the first entry
     ###
-    $(document).unbind('keydown.antigallery')
+    galleries = []
+    $('.this_is_an_antigallery').each (_, gallery) =>
+      container_offset = $(gallery).offset().top
+      current_offset = $(document).scrollTop()
+      result = container_offset - current_offset
+      galleries.push([Math.abs(result), gallery])
+    sorted = galleries.sort (a,b) ->
+      a[0] - b[0]
+    if sorted[0][1] == @renderer.container()[0]
+      true
+    else
+      false
 
   nextPage: ->
     ###
@@ -213,19 +216,11 @@ class self.AntiGallery
     ###
     Main entry point, hides pagination if neededed, registers events, then renders the thumbs/main.
     ###
-    @claimFirstSpot()
+    @renderer.container().addClass('this_is_an_antigallery')
     @hidePageNavigation() unless @paginator.shouldPaginate()
     @renderer.renderNavForPages(@paginator.totalPages()) if @paginator.shouldPaginate()
     @registerEvents()
     @renderThumbsAndMain()
-
-  claimFirstSpot: ->
-    ###
-    If the data attribute isnt there, then setup the key events for that gallery, if it is, skip, cause another already did.
-    ###
-    if $('body').data('first_antigallery') == undefined
-      @setupKeyEvents()
-      $('body').data('first_antigallery', 'done')
 
   hidePageNavigation: ->
     ###
@@ -238,7 +233,7 @@ class self.AntiGallery
     ###
     Register all the events we listen for on the elements provided by the renderer.
     ###
-    @registerMouseOverEvents()
+    @registerKeyEvents()
     @registerPrevious @renderer.previousButton()
     @registerNext @renderer.nextButton()
     @registerThumbPrevious @renderer.previousPageButton()
