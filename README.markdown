@@ -2,6 +2,7 @@
 The gallery built by a programmer, for programmers. You won't find this on any of the top 50 jquery gallery lists.
 
 ## Version/Changelog
+* 1.1.6 Direction is now set on nextItem/prevItem
 * 1.1.5 Completely rewrote keyboard events, instead of mouse in/out, its
   based on scrollPosition and which gallery is most visible
 * 1.1.4 Yet another typo, everything works again now, promise

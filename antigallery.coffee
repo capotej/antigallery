@@ -1,5 +1,5 @@
 ###
-VERSION 1.1.5
+VERSION 1.1.6
 
 MIT Licensed
 
@@ -194,6 +194,7 @@ class self.AntiGallery
     ###
     Goes to the next image and renders it.
     ###
+    @direction = "right"
     currentPage = @paginator.pageIndex
     @paginator.nextItem()
     if currentPage != @paginator.pageIndex
@@ -205,6 +206,7 @@ class self.AntiGallery
     ###
     Goes to the previous image and renders it.
     ###
+    @direction = "left"
     currentPage = @paginator.pageIndex
     @paginator.previousItem()
     if currentPage != @paginator.pageIndex

@@ -1,6 +1,6 @@
 (function() {
   /*
-  VERSION 1.1.5
+  VERSION 1.1.6
   
   MIT Licensed
   
@@ -208,6 +208,7 @@
       /*
           Goes to the next image and renders it.
           */      var currentPage;
+      this.direction = "right";
       currentPage = this.paginator.pageIndex;
       this.paginator.nextItem();
       if (currentPage !== this.paginator.pageIndex) {
@@ -220,6 +221,7 @@
       /*
           Goes to the previous image and renders it.
           */      var currentPage;
+      this.direction = "left";
       currentPage = this.paginator.pageIndex;
       this.paginator.previousItem();
       if (currentPage !== this.paginator.pageIndex) {
